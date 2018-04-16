@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>view</class>
+ <widget class="QDialog" name="view">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1049</width>
+    <width>1071</width>
     <height>547</height>
    </rect>
   </property>
@@ -30,7 +30,7 @@
    <property name="geometry">
     <rect>
      <x>11</x>
-     <y>160</y>
+     <y>100</y>
      <width>512</width>
      <height>384</height>
     </rect>
@@ -49,7 +49,7 @@
    <property name="geometry">
     <rect>
      <x>11</x>
-     <y>140</y>
+     <y>80</y>
      <width>81</width>
      <height>16</height>
     </rect>
@@ -62,32 +62,13 @@
    <property name="geometry">
     <rect>
      <x>530</x>
-     <y>140</y>
+     <y>80</y>
      <width>81</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
     <string>Filter Image</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="filImg">
-   <property name="geometry">
-    <rect>
-     <x>530</x>
-     <y>160</y>
-     <width>512</width>
-     <height>384</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::Box</enum>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="textFormat">
-    <enum>Qt::AutoText</enum>
    </property>
   </widget>
   <widget class="QGroupBox" name="groupBox">
@@ -169,6 +150,16 @@
    </property>
    <property name="text">
     <string>Open</string>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="f_view">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>100</y>
+     <width>512</width>
+     <height>384</height>
+    </rect>
    </property>
   </widget>
  </widget>
