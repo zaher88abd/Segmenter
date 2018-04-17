@@ -87,9 +87,7 @@ def filter_image(original_img, filter_num):
         print("Exred shape: ", exr.shape)
         # cv2.imshow("exr", exr)
         exr_mask = pf.thresh(exr, 0)
-        cv2.imshow("exr_mask", exr_mask)
-        exgr_mask=exgr_mask*255
-        cv2.imshow("exr_mask2", exr_mask)
+        # cv2.imshow("exr_mask", exr_mask)
         return exgr_mask
 
     # get NDI

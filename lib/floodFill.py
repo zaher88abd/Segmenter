@@ -15,7 +15,7 @@ Keys:
 '''
 
 import numpy as np
-import filter
+from  lib.filter import  *
 import cv2
 
 if __name__ == '__main__':
@@ -24,12 +24,11 @@ if __name__ == '__main__':
     try:
         fn = sys.argv[1]
     except:
-        fn = '/home/zaher/Project/segmenter/20180213_102948_007.jpg'
+        fn = '/home/zaher/GitHub/Segmeter/test.JPG'
     print
     __doc__
 
-    # img = cv2.imread(fn, True)
-    img = filter.filter_image(fn)
+    img = cv2.imread(fn, True)
     img = cv2.cvtColor(img, cv2.COLOR_RGBA2GRAY)
     print(img.shape)
     h, w = img.shape[:2]
