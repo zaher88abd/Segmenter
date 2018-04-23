@@ -28,15 +28,32 @@ class Segmeter(QDialog):
             self.base_color = (255, 255, 255)
             self.redBtn.clicked.connect(self.set_red_color)
             self.blueBtn.clicked.connect(self.set_blue_color)
+            self.whiteBtn.clicked.connect(self.set_white_color)
+            self.greenBtn.clicked.connect(self.set_green_color)
+            self.blackBtn.clicked.connect(self.set_black_color)
 
         except Exception as e:
             print(e)
 
+    def set_black_color(self):
+        self.base_color = (0, 0, 0)
+        self.color_selected.setStyleSheet("background-color: black")
+
     def set_blue_color(self):
         self.base_color = (255, 0, 0)
+        self.color_selected.setStyleSheet("background-color: blue")
+
+    def set_green_color(self):
+        self.base_color = (0, 255, 0)
+        self.color_selected.setStyleSheet("background-color: green")
+
+    def set_white_color(self):
+        self.base_color = (255, 255, 255)
+        self.color_selected.setStyleSheet("background-color: white")
 
     def set_red_color(self):
         self.base_color = (0, 0, 255)
+        self.color_selected.setStyleSheet("background-color: red")
 
     def mousePressEvent(self, event):
         try:
@@ -57,26 +74,19 @@ class Segmeter(QDialog):
 
     def floodfill_(self, x, y):
         try:
+            if not hasattr(self, 'f_image'):
+                return
             if self.seed_pt == None:
                 return
-            color = (self.f_image[y - 70, x - 530])
-            colorm = (self.mask[y - 70, x - 530])
-            print("Base Color", color)
-            print("Base Color M", colorm)
+
             flooded = self.f_image.copy()
-            print(self.f_image.shape)
-            print(self.mask.shape)
             self.mask[:] = 0
-            # lo = cv2.getTrackbarPos('lo', 'floodfill')
-            # hi = cv2.getTrackbarPos('hi', 'floodfill')
             flags = self.connectivity
             if True:  # fixed_range
                 flags |= cv2.FLOODFILL_FIXED_RANGE
 
             print("Color new", self.base_color)
             cv2.floodFill(flooded, self.mask, self.seed_pt, self.base_color, (20,) * 3, (20,) * 3, flags)
-            # cv2.circle(flooded, self.seed_pt, 2, self.color, -1)
-            # cv2.imshow('floodfill', flooded)
             self.f_image = flooded
             self.update_Image()
         except Exception as e:
@@ -141,7 +151,6 @@ class Segmeter(QDialog):
 
             self.f_image = filter_image(self.image, 1)
             height, width = self.image.shape[:2]
-            print("F_image shape", self.f_image.shape)
             max_height = 384
             max_width = 512
 
@@ -162,8 +171,8 @@ class Segmeter(QDialog):
             self.orgImg.setPixmap(QPixmap.fromImage(img))
             self.orgImg.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
 
+            # Show filtered photo
             self.f_image = covertGrayRGB(np.uint8(self.f_image))
-
             fimg = QImage(self.f_image, self.f_image.shape[1], self.f_image.shape[0], self.f_image.strides[0],
                           get_image_format(self.f_image))
             fimg = fimg.rgbSwapped()
