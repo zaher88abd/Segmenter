@@ -32,8 +32,26 @@ class Segmeter(QDialog):
             self.greenBtn.clicked.connect(self.set_green_color)
             self.blackBtn.clicked.connect(self.set_black_color)
 
+            self.saveBtn.clicked.connect(self.save_image)
+
+            self.fillBtn.clicked.connect(self.fill_tool)
+            self.pencilBtn.clicked.connect(self.pencil_tool)
+            self.selected_tool = 0  # nothing
+
         except Exception as e:
             print(e)
+
+    def save_image(self):
+        file_name = QFileDialog.getSaveFileName(self, 'Dialog Save')
+        self.file_name = file_name[0]
+        print("Save name", file_name)
+        cv2.imwrite(file_name[0], self.f_image)
+
+    def fill_tool(self):
+        self.selected_tool = 1
+
+    def pencil_tool(self):
+        self.selected_tool = 2
 
     def set_black_color(self):
         self.base_color = (0, 0, 0)
@@ -60,19 +78,21 @@ class Segmeter(QDialog):
             point = QtCore.QPoint(event.pos())
             x = int(point.x())
             y = int(point.y())
-            print("X ", x, " XX", x - 530)
-            print("Y ", y, " YY", y - 70)
+
             self.seed_pt = x - 530, y - 70
             if x >= 530 and x <= 1042:
                 if y >= 70 and y <= 454:
-                    self.floodfill_(x, y)
+                    if self.selected_tool == 1:
+                        self.floodfill_()
+                    elif self.selected_tool == 2:
+                        self.points_()
             # if self.imgQ.isUnderMouse():
             #     self.photoClicked.emit(QtCore.QPoint(event.pos()))
             super(Segmeter, self).mousePressEvent(event)
         except Exception as e:
             print(e)
 
-    def floodfill_(self, x, y):
+    def floodfill_(self):
         try:
             if not hasattr(self, 'f_image'):
                 return
@@ -87,6 +107,26 @@ class Segmeter(QDialog):
 
             print("Color new", self.base_color)
             cv2.floodFill(flooded, self.mask, self.seed_pt, self.base_color, (20,) * 3, (20,) * 3, flags)
+            self.f_image = flooded
+            self.update_Image()
+        except Exception as e:
+            print(e)
+
+    def points_(self):
+        try:
+            if not hasattr(self, 'f_image'):
+                return
+            if self.seed_pt == None:
+                return
+
+            flooded = self.f_image.copy()
+            self.mask[:] = 0
+            flags = self.connectivity
+            if True:  # fixed_range
+                flags |= cv2.FLOODFILL_FIXED_RANGE
+
+            print("Color new", self.base_color)
+            cv2.circle(flooded, self.seed_pt, 2, self.base_color, -1)
             self.f_image = flooded
             self.update_Image()
         except Exception as e:
