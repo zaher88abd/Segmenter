@@ -165,25 +165,6 @@
     <string>Open</string>
    </property>
   </widget>
-  <widget class="QGraphicsView" name="f_view">
-   <property name="geometry">
-    <rect>
-     <x>530</x>
-     <y>70</y>
-     <width>512</width>
-     <height>384</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::NoFrame</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Plain</enum>
-   </property>
-   <property name="lineWidth">
-    <number>0</number>
-   </property>
-  </widget>
   <widget class="QPushButton" name="openBtnDir">
    <property name="geometry">
     <rect>
@@ -320,6 +301,25 @@
    </property>
    <property name="flat">
     <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="f_view">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>70</y>
+     <width>512</width>
+     <height>384</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="textFormat">
+    <enum>Qt::AutoText</enum>
    </property>
   </widget>
  </widget>

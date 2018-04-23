@@ -24,9 +24,6 @@ class Segmeter(QDialog):
             self.openBtnDir.clicked.connect(self.openDir)
             self.nextBtn.clicked.connect(self.nextImage)
             self.prvBtn.clicked.connect(self.prvImage)
-            # self.editPixInfo.setReadOnly(True)
-            self.scene = QGraphicsScene(self)
-            self.f_view.setScene(self.scene)
 
             self.base_color = (255, 255, 255)
             self.redBtn.clicked.connect(self.set_red_color)
@@ -36,11 +33,10 @@ class Segmeter(QDialog):
             print(e)
 
     def set_blue_color(self):
-        print("testBlue Btn")
-        self.base_color = (0, 0, 255)
+        self.base_color = (255, 0, 0)
 
     def set_red_color(self):
-        self.base_color = (255, 0, 0)
+        self.base_color = (0, 0, 255)
 
     def mousePressEvent(self, event):
         try:
@@ -88,14 +84,11 @@ class Segmeter(QDialog):
 
     def update_Image(self):
         try:
-            scaled_image = Image.fromarray(self.f_image)
-            img = ImageQt(scaled_image)
-            pixMap = QPixmap.fromImage(img)
-            self.scene = QGraphicsScene(self)
-            self.f_view.setScene(self.scene)
-            self.scene.addPixmap(pixMap)
-            self.f_view.fitInView(QRectF(0, 0, self.f_image.shape[1], self.f_image.shape[0]), Qt.KeepAspectRatio)
-            self.scene.update()
+            fimg = QImage(self.f_image, self.f_image.shape[1], self.f_image.shape[0], self.f_image.strides[0],
+                          get_image_format(self.f_image))
+            fimg = fimg.rgbSwapped()
+            self.f_view.setPixmap(QPixmap.fromImage(fimg))
+            self.f_view.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
         except Exception as e:
             print(e)
 
@@ -145,13 +138,6 @@ class Segmeter(QDialog):
 
     def displayImage(self):
         try:
-            self.scene.clear()
-            qformat = QImage.Format_Indexed8
-            if len(self.image.shape) == 3:
-                if (self.image.shape[2]) == 4:
-                    qformat = QImage.Format_RGBA8888
-                else:
-                    qformat = QImage.Format_RGB888
 
             self.f_image = filter_image(self.image, 1)
             height, width = self.image.shape[:2]
@@ -170,19 +156,19 @@ class Segmeter(QDialog):
                                         interpolation=cv2.INTER_AREA)
 
             # Show original Photo
-            img = QImage(self.image, self.image.shape[1], self.image.shape[0], self.image.strides[0], qformat)
+            img = QImage(self.image, self.image.shape[1], self.image.shape[0], self.image.strides[0],
+                         get_image_format(self.image))
             img = img.rgbSwapped()
             self.orgImg.setPixmap(QPixmap.fromImage(img))
             self.orgImg.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
 
-            # self.f_image = np.uint8(self.f_image)
             self.f_image = covertGrayRGB(np.uint8(self.f_image))
-            scaled_image = Image.fromarray(self.f_image)
-            self.imgQ = ImageQt(scaled_image)
-            pixMap = QPixmap.fromImage(self.imgQ)
-            self.scene.addPixmap(pixMap)
-            self.f_view.fitInView(QRectF(0, 0, self.f_image.shape[1], self.f_image.shape[0]), Qt.KeepAspectRatio)
-            self.scene.update()
+
+            fimg = QImage(self.f_image, self.f_image.shape[1], self.f_image.shape[0], self.f_image.strides[0],
+                          get_image_format(self.f_image))
+            fimg = fimg.rgbSwapped()
+            self.f_view.setPixmap(QPixmap.fromImage(fimg))
+            self.f_view.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
 
             h, w = self.f_image.shape[:2]
             self.mask = np.zeros((h + 2, w + 2), np.uint8)
