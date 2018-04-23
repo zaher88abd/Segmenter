@@ -31,6 +31,7 @@ class Segmeter(QDialog):
             self.scene.clicked.connect(self.testclick)
             self.mydasda.setScene(self.scene)
 
+
         except Exception as e:
             print(e)
 
@@ -39,6 +40,8 @@ class Segmeter(QDialog):
             point = QtCore.QPoint(event.pos())
             x = int(point.x())
             y = int(point.y())
+            print("X ", x, " XX", x - 530)
+            print("Y ", y, " YY", y - 70)
             self.seed_pt = x - 530, y - 70
             if x >= 530 and x <= 1042:
                 if y >= 70 and y <= 454:
@@ -52,6 +55,10 @@ class Segmeter(QDialog):
     def floodfill_(self, x, y):
         if self.seed_pt == None:
             return
+        color = (self.f_image[y - 70, x - 530])
+        colorm = (self.mask[y - 70, x - 530])
+        print("Base Color", color)
+        print("Base Color M", colorm)
         flooded = self.f_image.copy()
         print(self.f_image.shape)
         print(self.mask.shape)
@@ -62,11 +69,8 @@ class Segmeter(QDialog):
         if True:  # fixed_range
             flags |= cv2.FLOODFILL_FIXED_RANGE
 
-        print(self.f_image.dtype)  # 8UC1
-        # img.convertTo(img, cv2.CV_8UC1)
-
-        cv2.floodFill(flooded, self.mask, self.seed_pt, (255, 255, 255), (20,) * 3, (20,) * 3, flags)
-        cv2.circle(flooded, self.seed_pt, 2, self.color, -1)
+        cv2.floodFill(flooded, self.mask, self.seed_pt, self.baseColor, (20,) * 3, (20,) * 3, flags)
+        # cv2.circle(flooded, self.seed_pt, 2, self.color, -1)
         # cv2.imshow('floodfill', flooded)
         self.f_image = flooded
         self.update_Image()
@@ -135,8 +139,8 @@ class Segmeter(QDialog):
 
             self.f_image = filter_image(self.image, 1)
             height, width = self.image.shape[:2]
-            max_height = 512
-            max_width = 384
+            max_height = 384
+            max_width = 512
 
             # only shrink if img is bigger than required
             if max_height < height or max_width < width:
