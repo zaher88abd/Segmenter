@@ -15,7 +15,6 @@ Keys:
 '''
 
 import numpy as np
-from  lib.filter import  *
 import cv2
 
 if __name__ == '__main__':
@@ -24,13 +23,13 @@ if __name__ == '__main__':
     try:
         fn = sys.argv[1]
     except:
-        fn = '/home/zaher/GitHub/Segmeter/test.JPG'
+        fn = 'C:\\Users\\zaher\\Documents\\Github\\Segmeter\\test_image.jpg'
     print
     __doc__
 
     img = cv2.imread(fn, True)
-    img = cv2.cvtColor(img, cv2.COLOR_RGBA2GRAY)
-    print(img.shape)
+    # img = cv2.cvtColor(img, cv2.COLOR_RGBA2GRAY)
+    # print(img.shape)
     h, w = img.shape[:2]
     mask = np.zeros((h + 2, w + 2), np.uint8)
     seed_pt = None
@@ -52,7 +51,7 @@ if __name__ == '__main__':
         if fixed_range:
             flags |= cv2.FLOODFILL_FIXED_RANGE
 
-        cv2.floodFill(flooded, mask, seed_pt, (255, 255, 255), (lo,) * 3, (hi,) * 3, flags)
+        cv2.floodFill(flooded, mask, seed_pt, (0, 0, 255), (lo,) * 3, (hi,) * 3, flags)
         cv2.circle(flooded, seed_pt, 2, color, -1)
         cv2.imshow('floodfill', flooded)
 

@@ -8,9 +8,8 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QGraphicsScene, QLineEdit, QGraphicsView, QMessageBox
 from PyQt5.uic import loadUi
 from qtconsole.qt import QtCore
-
-from PhotoViewer import MyQGraphicsView
 from lib.filter import *
+from lib.UtilOpenCV import *
 
 
 class Segmeter(QDialog):
@@ -28,12 +27,20 @@ class Segmeter(QDialog):
             # self.editPixInfo.setReadOnly(True)
             self.scene = QGraphicsScene(self)
             self.f_view.setScene(self.scene)
-            self.scene.clicked.connect(self.testclick)
-            self.mydasda.setScene(self.scene)
 
+            self.base_color = (255, 255, 255)
+            self.redBtn.clicked.connect(self.set_red_color)
+            self.blueBtn.clicked.connect(self.set_blue_color)
 
         except Exception as e:
             print(e)
+
+    def set_blue_color(self):
+        print("testBlue Btn")
+        self.base_color = (0, 0, 255)
+
+    def set_red_color(self):
+        self.base_color = (255, 0, 0)
 
     def mousePressEvent(self, event):
         try:
@@ -53,35 +60,44 @@ class Segmeter(QDialog):
             print(e)
 
     def floodfill_(self, x, y):
-        if self.seed_pt == None:
-            return
-        color = (self.f_image[y - 70, x - 530])
-        colorm = (self.mask[y - 70, x - 530])
-        print("Base Color", color)
-        print("Base Color M", colorm)
-        flooded = self.f_image.copy()
-        print(self.f_image.shape)
-        print(self.mask.shape)
-        self.mask[:] = 0
-        # lo = cv2.getTrackbarPos('lo', 'floodfill')
-        # hi = cv2.getTrackbarPos('hi', 'floodfill')
-        flags = self.connectivity
-        if True:  # fixed_range
-            flags |= cv2.FLOODFILL_FIXED_RANGE
+        try:
+            if self.seed_pt == None:
+                return
+            color = (self.f_image[y - 70, x - 530])
+            colorm = (self.mask[y - 70, x - 530])
+            print("Base Color", color)
+            print("Base Color M", colorm)
+            flooded = self.f_image.copy()
+            print(self.f_image.shape)
+            print(self.mask.shape)
+            self.mask[:] = 0
+            # lo = cv2.getTrackbarPos('lo', 'floodfill')
+            # hi = cv2.getTrackbarPos('hi', 'floodfill')
+            flags = self.connectivity
+            if True:  # fixed_range
+                flags |= cv2.FLOODFILL_FIXED_RANGE
 
-        cv2.floodFill(flooded, self.mask, self.seed_pt, self.baseColor, (20,) * 3, (20,) * 3, flags)
-        # cv2.circle(flooded, self.seed_pt, 2, self.color, -1)
-        # cv2.imshow('floodfill', flooded)
-        self.f_image = flooded
-        self.update_Image()
+            print("Color new", self.base_color)
+            cv2.floodFill(flooded, self.mask, self.seed_pt, self.base_color, (20,) * 3, (20,) * 3, flags)
+            # cv2.circle(flooded, self.seed_pt, 2, self.color, -1)
+            # cv2.imshow('floodfill', flooded)
+            self.f_image = flooded
+            self.update_Image()
+        except Exception as e:
+            print(e)
 
     def update_Image(self):
-        scaled_image = Image.fromarray(np.uint8(self.f_image))
-        self.imgQ = ImageQt(scaled_image)
-        pixMap = QPixmap.fromImage(self.imgQ)
-        self.scene.addPixmap(pixMap)
-        self.f_view.fitInView(QRectF(0, 0, self.f_image.shape[1], self.f_image.shape[0]), Qt.KeepAspectRatio)
-        self.scene.update()
+        try:
+            scaled_image = Image.fromarray(self.f_image)
+            img = ImageQt(scaled_image)
+            pixMap = QPixmap.fromImage(img)
+            self.scene = QGraphicsScene(self)
+            self.f_view.setScene(self.scene)
+            self.scene.addPixmap(pixMap)
+            self.f_view.fitInView(QRectF(0, 0, self.f_image.shape[1], self.f_image.shape[0]), Qt.KeepAspectRatio)
+            self.scene.update()
+        except Exception as e:
+            print(e)
 
     @pyqtSlot()
     def openFile(self):
@@ -139,6 +155,7 @@ class Segmeter(QDialog):
 
             self.f_image = filter_image(self.image, 1)
             height, width = self.image.shape[:2]
+            print("F_image shape", self.f_image.shape)
             max_height = 384
             max_width = 512
 
@@ -152,18 +169,21 @@ class Segmeter(QDialog):
                 self.image = cv2.resize(self.image, None, fx=scaling_factor, fy=scaling_factor,
                                         interpolation=cv2.INTER_AREA)
 
+            # Show original Photo
             img = QImage(self.image, self.image.shape[1], self.image.shape[0], self.image.strides[0], qformat)
             img = img.rgbSwapped()
-
             self.orgImg.setPixmap(QPixmap.fromImage(img))
             self.orgImg.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
-            self.f_image = np.uint8(self.f_image)
+
+            # self.f_image = np.uint8(self.f_image)
+            self.f_image = covertGrayRGB(np.uint8(self.f_image))
             scaled_image = Image.fromarray(self.f_image)
             self.imgQ = ImageQt(scaled_image)
             pixMap = QPixmap.fromImage(self.imgQ)
             self.scene.addPixmap(pixMap)
             self.f_view.fitInView(QRectF(0, 0, self.f_image.shape[1], self.f_image.shape[0]), Qt.KeepAspectRatio)
             self.scene.update()
+
             h, w = self.f_image.shape[:2]
             self.mask = np.zeros((h + 2, w + 2), np.uint8)
             self.connectivity = 4
