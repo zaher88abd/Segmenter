@@ -26,6 +26,14 @@ class Segmeter(QDialog):
             self.prvBtn.clicked.connect(self.prvImage)
 
             self.base_color = (255, 255, 255)
+            self.color_selected.setStyleSheet("background-color: white")
+            self.blackBtn.setStyleSheet("background-color: black")
+            self.blueBtn.setStyleSheet("background-color: blue")
+            self.greenBtn.setStyleSheet("background-color: green")
+            self.whiteBtn.setStyleSheet("background-color: white")
+            self.redBtn.setStyleSheet("background-color: red")
+            self.yellowkBtn.setStyleSheet("background-color: yellow")
+            self.yellowkBtn.clicked.connect(self.set_yellow_color)
             self.redBtn.clicked.connect(self.set_red_color)
             self.blueBtn.clicked.connect(self.set_blue_color)
             self.whiteBtn.clicked.connect(self.set_white_color)
@@ -61,6 +69,10 @@ class Segmeter(QDialog):
         self.base_color = (255, 0, 0)
         self.color_selected.setStyleSheet("background-color: blue")
 
+    def set_yellow_color(self):
+        self.base_color = (255, 0, 0)
+        self.color_selected.setStyleSheet("background-color: yellow")
+
     def set_green_color(self):
         self.base_color = (0, 255, 0)
         self.color_selected.setStyleSheet("background-color: green")
@@ -84,8 +96,6 @@ class Segmeter(QDialog):
                 if y >= 70 and y <= 454:
                     if self.selected_tool == 1:
                         self.floodfill_()
-                    elif self.selected_tool == 2:
-                        self.points_()
             # if self.imgQ.isUnderMouse():
             #     self.photoClicked.emit(QtCore.QPoint(event.pos()))
             super(Segmeter, self).mousePressEvent(event)
@@ -108,7 +118,7 @@ class Segmeter(QDialog):
             print("Color new", self.base_color)
             cv2.floodFill(flooded, self.mask, self.seed_pt, self.base_color, (20,) * 3, (20,) * 3, flags)
             self.f_image = flooded
-            self.update_Image()
+            self.update_image()
         except Exception as e:
             print(e)
 
@@ -128,11 +138,11 @@ class Segmeter(QDialog):
             print("Color new", self.base_color)
             cv2.circle(flooded, self.seed_pt, 2, self.base_color, -1)
             self.f_image = flooded
-            self.update_Image()
+            self.update_image()
         except Exception as e:
             print(e)
 
-    def update_Image(self):
+    def update_image(self):
         try:
             fimg = QImage(self.f_image, self.f_image.shape[1], self.f_image.shape[0], self.f_image.strides[0],
                           get_image_format(self.f_image))
