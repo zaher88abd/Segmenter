@@ -1,15 +1,26 @@
+import glob
+import os
 import sys
-import glob, os
+from pathlib import Path
 
-from PIL import Image
-from PIL.ImageQt import ImageQt
 from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QGraphicsScene, QLineEdit, QGraphicsView, QMessageBox
+from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QLineEdit
 from PyQt5.uic import loadUi
 from qtconsole.qt import QtCore
-from lib.filter import *
+
 from lib.UtilOpenCV import *
+from lib.filter import *
+
+
+def create_folder(dir):
+    try:
+        s_dir = Path(dir)
+        s_dir = Path(s_dir.parents[0], "segmenter", s_dir.parts[len(s_dir.parts) - 1])
+        print(s_dir)
+        if not os.path.exists(s_dir):
+            os.makedirs(s_dir)
+    except Exception as e:
+        print(e)
 
 
 class Segmeter(QDialog):
@@ -70,7 +81,7 @@ class Segmeter(QDialog):
         self.color_selected.setStyleSheet("background-color: blue")
 
     def set_yellow_color(self):
-        self.base_color = (255, 0, 0)
+        self.base_color = (255, 255, 0)
         self.color_selected.setStyleSheet("background-color: yellow")
 
     def set_green_color(self):
@@ -160,15 +171,22 @@ class Segmeter(QDialog):
 
     @pyqtSlot()
     def openDir(self):
-        self.dir = QFileDialog.getExistingDirectory(self, "Open a folder", "*.jpg", QFileDialog.ShowDirsOnly)
-        os.chdir(self.dir)
-        types = ("*.jpg", "*.png")
-        self.files = []
-        for type in types:
-            self.files.extend(glob.glob(type))
-        self.currentInd = 0
-        if (self.files) != 0:
-            self.loadImage(current_image=True)
+        try:
+            # path of the Dir
+            self.dir = QFileDialog.getExistingDirectory(self, "Open a folder", "*.jpg", QFileDialog.ShowDirsOnly)
+            os.chdir(self.dir)
+            types = ("*.jpg", "*.png")
+            # create folder for seg images
+            create_folder(self.dir)
+            # name of the files
+            self.files = []
+            for type in types:
+                self.files.extend(glob.glob(type))
+            self.currentInd = 0
+            if (self.files) != 0:
+                self.loadImage(current_image=True)
+        except Exception as e:
+            print(e)
 
     def nextImage(self):
         try:
