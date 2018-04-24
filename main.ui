@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1235</width>
+    <width>1128</width>
     <height>458</height>
    </rect>
   </property>
@@ -81,7 +81,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>GroupBox</string>
+    <string>Filters</string>
    </property>
    <widget class="QRadioButton" name="radBtnNDI">
     <property name="geometry">
@@ -122,7 +122,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>RadioButton</string>
+     <string>None</string>
     </property>
    </widget>
   </widget>
@@ -178,131 +178,6 @@
     <string>Open dir</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="redBtn">
-   <property name="geometry">
-    <rect>
-     <x>1050</x>
-     <y>390</y>
-     <width>81</width>
-     <height>61</height>
-    </rect>
-   </property>
-   <property name="acceptDrops">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>RED</string>
-   </property>
-   <property name="autoDefault">
-    <bool>true</bool>
-   </property>
-   <property name="default">
-    <bool>true</bool>
-   </property>
-   <property name="flat">
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="blueBtn">
-   <property name="geometry">
-    <rect>
-     <x>1140</x>
-     <y>390</y>
-     <width>81</width>
-     <height>61</height>
-    </rect>
-   </property>
-   <property name="acceptDrops">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>BLUE</string>
-   </property>
-   <property name="autoDefault">
-    <bool>true</bool>
-   </property>
-   <property name="default">
-    <bool>true</bool>
-   </property>
-   <property name="flat">
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="greenBtn">
-   <property name="geometry">
-    <rect>
-     <x>1140</x>
-     <y>320</y>
-     <width>81</width>
-     <height>61</height>
-    </rect>
-   </property>
-   <property name="acceptDrops">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>GREEN</string>
-   </property>
-   <property name="autoDefault">
-    <bool>true</bool>
-   </property>
-   <property name="default">
-    <bool>true</bool>
-   </property>
-   <property name="flat">
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="whiteBtn">
-   <property name="geometry">
-    <rect>
-     <x>1050</x>
-     <y>320</y>
-     <width>81</width>
-     <height>61</height>
-    </rect>
-   </property>
-   <property name="acceptDrops">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>White</string>
-   </property>
-   <property name="autoDefault">
-    <bool>true</bool>
-   </property>
-   <property name="default">
-    <bool>true</bool>
-   </property>
-   <property name="flat">
-    <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="blackBtn">
-   <property name="geometry">
-    <rect>
-     <x>1050</x>
-     <y>250</y>
-     <width>81</width>
-     <height>61</height>
-    </rect>
-   </property>
-   <property name="acceptDrops">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Black</string>
-   </property>
-   <property name="autoDefault">
-    <bool>true</bool>
-   </property>
-   <property name="default">
-    <bool>true</bool>
-   </property>
-   <property name="flat">
-    <bool>false</bool>
-   </property>
-  </widget>
   <widget class="QLabel" name="f_view">
    <property name="geometry">
     <rect>
@@ -327,8 +202,8 @@
     <rect>
      <x>1050</x>
      <y>70</y>
-     <width>81</width>
-     <height>61</height>
+     <width>71</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="acceptDrops">
@@ -351,9 +226,9 @@
    <property name="geometry">
     <rect>
      <x>1050</x>
-     <y>140</y>
-     <width>81</width>
-     <height>61</height>
+     <y>120</y>
+     <width>31</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="acceptDrops">
@@ -368,8 +243,8 @@
    </property>
    <property name="iconSize">
     <size>
-     <width>30</width>
-     <height>30</height>
+     <width>20</width>
+     <height>20</height>
     </size>
    </property>
    <property name="autoDefault">
@@ -385,10 +260,10 @@
   <widget class="QPushButton" name="pencilBtn">
    <property name="geometry">
     <rect>
-     <x>1140</x>
-     <y>140</y>
-     <width>81</width>
-     <height>61</height>
+     <x>1090</x>
+     <y>120</y>
+     <width>31</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="acceptDrops">
@@ -403,8 +278,8 @@
    </property>
    <property name="iconSize">
     <size>
-     <width>30</width>
-     <height>30</height>
+     <width>20</width>
+     <height>20</height>
     </size>
    </property>
    <property name="autoDefault">
@@ -416,6 +291,132 @@
    <property name="flat">
     <bool>false</bool>
    </property>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>1050</x>
+     <y>360</y>
+     <width>72</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QPushButton" name="yellowkBtn">
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QPushButton" name="greenBtn">
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QPushButton" name="whiteBtn">
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QPushButton" name="blackBtn">
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QPushButton" name="redBtn">
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QPushButton" name="blueBtn">
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>
