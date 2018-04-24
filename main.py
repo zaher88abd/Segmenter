@@ -18,6 +18,9 @@ class Segmeter(QDialog):
         self.currentInd = 0
         self.files = []
         self.filter_number = 1
+        self.saved_dir = None
+        self.base_color = (255, 255, 255)
+        self.selected_tool = 0  # nothing
         try:
             super().__init__()
             loadUi('main.ui', self)
@@ -28,7 +31,6 @@ class Segmeter(QDialog):
             self.nextBtn.clicked.connect(self.next_image)
             self.prvBtn.clicked.connect(self.prv_image)
 
-            self.base_color = (255, 255, 255)
             self.color_selected.setStyleSheet("background-color: white")
             self.blackBtn.setStyleSheet("background-color: black")
             self.blueBtn.setStyleSheet("background-color: blue")
@@ -47,7 +49,6 @@ class Segmeter(QDialog):
 
             self.fillBtn.clicked.connect(self.fill_tool)
             self.pencilBtn.clicked.connect(self.pencil_tool)
-            self.selected_tool = 0  # nothing
 
             self.radBtnEG.clicked.connect(lambda: self.rd_btn_check(self.radBtnEG))
             self.radBtnNDI.clicked.connect(lambda: self.rd_btn_check(self.radBtnNDI))
@@ -203,8 +204,16 @@ class Segmeter(QDialog):
         except Exception as e:
             print(e)
 
+    def save_current_segment(self):
+        if self.saved_dir is None:
+            self.saved_dir = QFileDialog.getExistingDirectory(self, "Open a folder", "*.jpg", QFileDialog.ShowDirsOnly)
+        file_name = os.path.join(self.saved_dir, self.files[self.currentInd])
+        print("Save name", file_name)
+        cv2.imwrite(file_name, self.f_image)
+
     def next_image(self):
         try:
+            self.save_current_segment()
             self.currentInd += 1
             if self.currentInd == len(self.files):
                 self.currentInd = 0
@@ -219,7 +228,7 @@ class Segmeter(QDialog):
             if self.currentInd == 0:
                 self.currentInd = len(self.files) - 1
                 # self.initUI()
-            self.loadImage(current_image=True)
+            self.load_image(current_image=True)
         except Exception as e:
             print(e)
 
