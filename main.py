@@ -147,7 +147,6 @@ class Segmeter(QDialog):
                 return
             if self.seed_pt == None:
                 return
-            print("asdasd")
 
             flooded = self.f_image.copy()
 
@@ -287,15 +286,30 @@ class Segmeter(QDialog):
     def eventFilter(self, source, event):
         if event.type() == QEvent.MouseMove:
             if event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 2:
-                point = QtCore.QPoint(event.pos())
-                x = int(point.x())
-                y = int(point.y())
+                try:
+                    point = QtCore.QPoint(event.pos())
+                    x = int(point.x())
+                    y = int(point.y())
+                    self.seed_pt = x - 530, y - 70
+                    if 530 <= x <= 1042:
+                        if 70 <= y <= 454:
+                            self.points_()
+                except Exception as e:
+                    print(e)
+            if event.buttons() == QtCore.Qt.RightButton and self.selected_tool == 2:
+                try:
+                    point = QtCore.QPoint(event.pos())
+                    x = int(point.x())
+                    y = int(point.y())
 
-                self.seed_pt = x - 530, y - 70
-                if 530 <= x <= 1042:
-                    if 70 <= y <= 454:
-                        self.points_()
-        elif event.type() == QEvent.MouseButtonPress and self.selected_tool == 1:
+                    self.seed_pt = x - 530, y - 70
+                    if 530 <= x <= 1042:
+                        if 70 <= y <= 454:
+                            if not np.array_equal(self.f_image[y - 70, x - 530], [0, 0, 0]):
+                                self.points_()
+                except Exception as e:
+                    print(e)
+        elif event.type() == QEvent.MouseButtonPress and event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 1:
             try:
                 point = QtCore.QPoint(event.pos())
                 x = int(point.x())
