@@ -12,29 +12,21 @@ from lib.UtilOpenCV import *
 from lib.filter import *
 
 
-def create_folder(dir):
-    try:
-        s_dir = Path(dir)
-        s_dir = Path(s_dir.parents[0], "segmenter", s_dir.parts[len(s_dir.parts) - 1])
-        print(s_dir)
-        if not os.path.exists(s_dir):
-            os.makedirs(s_dir)
-    except Exception as e:
-        print(e)
-
-
 class Segmeter(QDialog):
 
     def __init__(self):
+        self.currentInd = 0
+        self.files = []
+        self.filter_number = 1
         try:
             super().__init__()
             loadUi('main.ui', self)
             self.image = None
             self.editPixInfo = QLineEdit(self)
             self.openBtn.clicked.connect(self.openFile)
-            self.openBtnDir.clicked.connect(self.openDir)
-            self.nextBtn.clicked.connect(self.nextImage)
-            self.prvBtn.clicked.connect(self.prvImage)
+            self.openBtnDir.clicked.connect(self.open_dir)
+            self.nextBtn.clicked.connect(self.next_image)
+            self.prvBtn.clicked.connect(self.prv_image)
 
             self.base_color = (255, 255, 255)
             self.color_selected.setStyleSheet("background-color: white")
@@ -57,8 +49,21 @@ class Segmeter(QDialog):
             self.pencilBtn.clicked.connect(self.pencil_tool)
             self.selected_tool = 0  # nothing
 
+            self.radBtnEG.clicked.connect(lambda: self.rd_btn_check(self.radBtnEG))
+            self.radBtnNDI.clicked.connect(lambda: self.rd_btn_check(self.radBtnNDI))
+            self.radBtnNon.clicked.connect(lambda: self.rd_btn_check(self.radBtnNon))
+
         except Exception as e:
             print(e)
+
+    def rd_btn_check(self, rad):
+        if rad.objectName() in "radBtnNon":
+            self.filter_number = 0
+            return
+        elif rad.objectName() in "radBtnNDI":
+            self.filter_number = 2
+        elif rad.objectName() in "radBtnEG":
+            self.filter_number = 1
 
     def save_image(self):
         file_name = QFileDialog.getSaveFileName(self, 'Dialog Save')
@@ -71,6 +76,7 @@ class Segmeter(QDialog):
 
     def pencil_tool(self):
         self.selected_tool = 2
+        pass
 
     def set_black_color(self):
         self.base_color = (0, 0, 0)
@@ -103,8 +109,8 @@ class Segmeter(QDialog):
             y = int(point.y())
 
             self.seed_pt = x - 530, y - 70
-            if x >= 530 and x <= 1042:
-                if y >= 70 and y <= 454:
+            if 530 <= x <= 1042:
+                if 70 <= y <= 454:
                     if self.selected_tool == 1:
                         self.floodfill_()
             # if self.imgQ.isUnderMouse():
@@ -167,64 +173,73 @@ class Segmeter(QDialog):
     def openFile(self):
         file_name = QFileDialog.getOpenFileName(self, "Open file")
         self.file_name = file_name[0]
-        self.loadImage()
+        self.load_image()
 
     @pyqtSlot()
-    def openDir(self):
+    def open_dir(self):
         try:
             # path of the Dir
             self.dir = QFileDialog.getExistingDirectory(self, "Open a folder", "*.jpg", QFileDialog.ShowDirsOnly)
             os.chdir(self.dir)
             types = ("*.jpg", "*.png")
             # create folder for seg images
-            create_folder(self.dir)
+            self.create_folder(self.dir)
             # name of the files
-            self.files = []
-            for type in types:
-                self.files.extend(glob.glob(type))
-            self.currentInd = 0
-            if (self.files) != 0:
-                self.loadImage(current_image=True)
+            for TYPE in types:
+                self.files.extend(glob.glob(TYPE))
+            if self.files != 0:
+                self.load_image(current_image=True)
         except Exception as e:
             print(e)
 
-    def nextImage(self):
+    def create_folder(self, dir):
+        try:
+            s_dir = Path(dir)
+            s_dir = Path(s_dir.parents[0], "segmenter", s_dir.parts[len(s_dir.parts) - 1])
+            print(s_dir)
+            if not os.path.exists(s_dir):
+                os.makedirs(s_dir)
+            self.saved_dir = s_dir
+        except Exception as e:
+            print(e)
+
+    def next_image(self):
         try:
             self.currentInd += 1
             if self.currentInd == len(self.files):
                 self.currentInd = 0
                 # self.initUI()
-            self.loadImage(current_image=True)
+            self.load_image(current_image=True)
         except Exception as e:
             print(e)
 
-    def prvImage(self):
+    def prv_image(self):
         try:
             self.currentInd -= 1
             if self.currentInd == 0:
-                self.currentInd = len(self.files - 1)
+                self.currentInd = len(self.files) - 1
                 # self.initUI()
             self.loadImage(current_image=True)
         except Exception as e:
             print(e)
 
-    def loadImage(self, current_image=False):
-        if current_image == True:
+    def load_image(self, current_image=False):
+        if current_image:
             self.file_name = self.dir + "/" + self.files[self.currentInd]
         self.image = cv2.imread(self.file_name)
         self.display_image()
 
-    def show_image(self, widget, img):
-        img_ = QImage(img, img.shape[1], img.shape[0], img.strides[0],
-                      get_image_format(img))
-        img_ = img_.rgbSwapped()
-        widget.setPixmap(QPixmap.fromImage(img_))
+    @staticmethod
+    def show_image(widget, img):
+        widget.setPixmap(QPixmap.fromImage(
+            QImage(img, img.shape[1], img.shape[0]
+                   , img.strides[0], get_image_format(img)).rgbSwapped()))
         widget.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
 
     def display_image(self):
         try:
 
-            self.f_image = filter_image(self.image, 1)
+            self.f_image = filter_image(self.image, self.filter_number)
             height, width = self.image.shape[:2]
             max_height = 384
             max_width = 512
@@ -243,7 +258,8 @@ class Segmeter(QDialog):
             self.show_image(self.orgImg, self.image)
 
             # Show filtered photo
-            self.f_image = covertGrayRGB(np.uint8(self.f_image))
+            if self.filter_number == 1:
+                self.f_image = covertGrayRGB(np.uint8(self.f_image))
             self.show_image(self.f_view, self.f_image)
 
             h, w = self.f_image.shape[:2]

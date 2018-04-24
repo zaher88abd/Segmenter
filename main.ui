@@ -81,7 +81,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>GroupBox</string>
+    <string>Filters</string>
    </property>
    <widget class="QRadioButton" name="radBtnNDI">
     <property name="geometry">
