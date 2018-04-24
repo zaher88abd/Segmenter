@@ -184,9 +184,16 @@ class Segmeter(QDialog):
         if current_image == True:
             self.file_name = self.dir + "/" + self.files[self.currentInd]
         self.image = cv2.imread(self.file_name)
-        self.displayImage()
+        self.display_image()
 
-    def displayImage(self):
+    def show_image(self, widget, img):
+        img_ = QImage(img, img.shape[1], img.shape[0], img.strides[0],
+                      get_image_format(img))
+        img_ = img_.rgbSwapped()
+        widget.setPixmap(QPixmap.fromImage(img_))
+        widget.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+
+    def display_image(self):
         try:
 
             self.f_image = filter_image(self.image, 1)
@@ -205,19 +212,11 @@ class Segmeter(QDialog):
                                         interpolation=cv2.INTER_AREA)
 
             # Show original Photo
-            img = QImage(self.image, self.image.shape[1], self.image.shape[0], self.image.strides[0],
-                         get_image_format(self.image))
-            img = img.rgbSwapped()
-            self.orgImg.setPixmap(QPixmap.fromImage(img))
-            self.orgImg.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+            self.show_image(self.orgImg, self.image)
 
             # Show filtered photo
             self.f_image = covertGrayRGB(np.uint8(self.f_image))
-            fimg = QImage(self.f_image, self.f_image.shape[1], self.f_image.shape[0], self.f_image.strides[0],
-                          get_image_format(self.f_image))
-            fimg = fimg.rgbSwapped()
-            self.f_view.setPixmap(QPixmap.fromImage(fimg))
-            self.f_view.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+            self.show_image(self.f_view, self.f_image)
 
             h, w = self.f_image.shape[:2]
             self.mask = np.zeros((h + 2, w + 2), np.uint8)
