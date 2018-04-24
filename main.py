@@ -6,7 +6,7 @@ from pathlib import Path
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QLineEdit
 from PyQt5.uic import loadUi
-from qtconsole.qt import QtCore
+from qtconsole.qt import QtCore, QtGui
 
 from lib.UtilOpenCV import *
 from lib.filter import *
@@ -105,22 +105,22 @@ class Segmeter(QDialog):
         self.base_color = (0, 0, 255)
         self.color_selected.setStyleSheet("background-color: red")
 
-    def mousePressEvent(self, event):
-        try:
-            point = QtCore.QPoint(event.pos())
-            x = int(point.x())
-            y = int(point.y())
-
-            self.seed_pt = x - 530, y - 70
-            if 530 <= x <= 1042:
-                if 70 <= y <= 454:
-                    if self.selected_tool == 1:
-                        self.floodfill_()
-            # if self.imgQ.isUnderMouse():
-            #     self.photoClicked.emit(QtCore.QPoint(event.pos()))
-            super(Segmeter, self).mousePressEvent(event)
-        except Exception as e:
-            print(e)
+    # def mousePressEvent(self, event):
+    #     try:
+    #         point = QtCore.QPoint(event.pos())
+    #         x = int(point.x())
+    #         y = int(point.y())
+    #
+    #         self.seed_pt = x - 530, y - 70
+    #         if 530 <= x <= 1042:
+    #             if 70 <= y <= 454:
+    #                 if self.selected_tool == 1:
+    #                     self.floodfill_()
+    #         # if self.imgQ.isUnderMouse():
+    #         #     self.photoClicked.emit(QtCore.QPoint(event.pos()))
+    #         super(Segmeter, self).mousePressEvent(event)
+    #     except Exception as e:
+    #         print(e)
 
     def floodfill_(self):
         try:
@@ -135,7 +135,6 @@ class Segmeter(QDialog):
             if True:  # fixed_range
                 flags |= cv2.FLOODFILL_FIXED_RANGE
 
-            print("Color new", self.base_color)
             cv2.floodFill(flooded, self.mask, self.seed_pt, self.base_color, (20,) * 3, (20,) * 3, flags)
             self.f_image = flooded
             self.update_image()
@@ -150,12 +149,7 @@ class Segmeter(QDialog):
                 return
 
             flooded = self.f_image.copy()
-            self.mask[:] = 0
-            flags = self.connectivity
-            if True:  # fixed_range
-                flags |= cv2.FLOODFILL_FIXED_RANGE
 
-            print("Color new", self.base_color)
             cv2.circle(flooded, self.seed_pt, 2, self.base_color, -1)
             self.f_image = flooded
             self.update_image()
@@ -289,9 +283,53 @@ class Segmeter(QDialog):
         except Exception as e:
             print(e)
 
+    def eventFilter(self, source, event):
+        if event.type() == QEvent.MouseMove:
+            if event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 2:
+                try:
+                    point = QtCore.QPoint(event.pos())
+                    x = int(point.x())
+                    y = int(point.y())
+                    self.seed_pt = x - 530, y - 70
+                    if 530 <= x <= 1042:
+                        if 70 <= y <= 454:
+                            self.points_()
+                except Exception as e:
+                    print(e)
+            if event.buttons() == QtCore.Qt.RightButton and self.selected_tool == 2:
+                try:
+                    point = QtCore.QPoint(event.pos())
+                    x = int(point.x())
+                    y = int(point.y())
+
+                    self.seed_pt = x - 530, y - 70
+                    if 530 <= x <= 1042:
+                        if 70 <= y <= 454:
+                            if not np.array_equal(self.f_image[y - 70, x - 530], [0, 0, 0]):
+                                self.points_()
+                except Exception as e:
+                    print(e)
+        elif event.type() == QEvent.MouseButtonPress and event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 1:
+            try:
+                point = QtCore.QPoint(event.pos())
+                x = int(point.x())
+                y = int(point.y())
+
+                self.seed_pt = x - 530, y - 70
+                if 530 <= x <= 1042:
+                    if 70 <= y <= 454:
+                        if self.selected_tool == 1:
+                            self.floodfill_()
+                # if self.imgQ.isUnderMouse():
+                #     self.photoClicked.emit(QtCore.QPoint(event.pos()))
+            except Exception as e:
+                print(e)
+        return QtGui.QMainWindow.eventFilter(self, source, event)
+
 
 app = QApplication(sys.argv)
 window = Segmeter()
 window.setWindowTitle("Segmeter")
 window.show()
+app.installEventFilter(window)
 sys.exit(app.exec_())
