@@ -11,6 +11,8 @@ from qtconsole.qt import QtCore
 from lib.UtilOpenCV import *
 from lib.filter import *
 
+import numpy as np
+
 
 class Segmeter(QDialog):
 
@@ -88,7 +90,7 @@ class Segmeter(QDialog):
         self.color_selected.setStyleSheet("background-color: blue")
 
     def set_yellow_color(self):
-        self.base_color = (255, 255, 0)
+        self.base_color = (0, 255, 255)
         self.color_selected.setStyleSheet("background-color: yellow")
 
     def set_green_color(self):
@@ -224,6 +226,7 @@ class Segmeter(QDialog):
 
     def prv_image(self):
         try:
+            self.save_current_segment()
             self.currentInd -= 1
             if self.currentInd == 0:
                 self.currentInd = len(self.files) - 1
@@ -235,6 +238,11 @@ class Segmeter(QDialog):
     def load_image(self, current_image=False):
         if current_image:
             self.file_name = self.dir + "/" + self.files[self.currentInd]
+
+        if self.saved_dir is not None and Path(os.path.join(self.saved_dir, self.files[self.currentInd])).is_file():
+            self.f_image = cv2.imread(os.path.join(self.saved_dir, self.files[self.currentInd]))
+        else:
+            self.f_image = None
         self.image = cv2.imread(self.file_name)
         self.display_image()
 
@@ -247,8 +255,9 @@ class Segmeter(QDialog):
 
     def display_image(self):
         try:
+            if self.f_image is None:
+                self.f_image = filter_image(self.image, self.filter_number)
 
-            self.f_image = filter_image(self.image, self.filter_number)
             height, width = self.image.shape[:2]
             max_height = 384
             max_width = 512
@@ -268,7 +277,9 @@ class Segmeter(QDialog):
 
             # Show filtered photo
             if self.filter_number == 1:
-                self.f_image = covertGrayRGB(np.uint8(self.f_image))
+                if not self.f_image.dtype == 'uint8':
+                    self.f_image = np.uint8(self.f_image)
+                    self.f_image = covertGrayRGB(self.f_image)
             self.show_image(self.f_view, self.f_image)
 
             h, w = self.f_image.shape[:2]
