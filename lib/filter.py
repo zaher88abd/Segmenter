@@ -55,6 +55,8 @@ def scale_image(im):
 
 
 def filter_image(original_img, filter_num):
+    if filter_num == 0:
+        return original_img
     rgb_img = original_img  # cv2.imread(original_img, cv2.IMREAD_UNCHANGED)
 
     proper_h = 384
