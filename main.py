@@ -27,7 +27,6 @@ class Segmeter(QDialog):
             super().__init__()
             loadUi('main.ui', self)
             self.image = None
-            self.editPixInfo = QLineEdit(self)
             self.openBtn.clicked.connect(self.openFile)
             self.openBtnDir.clicked.connect(self.open_dir)
             self.nextBtn.clicked.connect(self.next_image)
