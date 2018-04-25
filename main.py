@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog, QLineEdit
 from PyQt5.uic import loadUi
 from qtconsole.qt import QtCore, QtGui
 
-from lib.UtilOpenCV import *
+from UtilOpencv import *
 from lib.filter import *
 
 import numpy as np
