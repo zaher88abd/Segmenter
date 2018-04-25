@@ -71,24 +71,24 @@ def thresh(img, conservative=0, min_blob_size=50):
   '''
 
   # blur and get level using otsus
-  blur = cv2.GaussianBlur(img, (13, 13), 0)
-  level, _ = cv2.threshold(
-      blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_TRIANGLE)
+  #blur = cv2.GaussianBlur(img, (13, 13), 0)
+  #level, _ = cv2.threshold(
+  #    blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_TRIANGLE)
 
   # print("Otsus Level: ",level)
 
   # change with conservative
-  level += conservative / 100.0 * level
+  #level += conservative / 100.0 * level
 
   # check boundaries
-  level = 255 if level > 255 else level
-  level = 0 if level < 0 else level
+  #level = 255 if level > 255 else level
+  # level = 0 if level < 0 else level
 
   # mask image
-  _, mask = cv2.threshold(blur, level, 255, cv2.THRESH_BINARY)
+  _, mask = cv2.threshold(img, 100, 255, cv2.THRESH_BINARY)
 
   # morph operators
-  kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+  kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 2))
   mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
   mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
 
