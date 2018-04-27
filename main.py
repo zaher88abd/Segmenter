@@ -136,7 +136,6 @@ class Segmeter(QDialog):
                 return
 
             flooded = self.f_image.copy()
-            print("s22sss", self.seed_pt)
 
             if isLeft:
                 cv2.circle(flooded, self.seed_pt, 1, self.base_color, -1)
@@ -147,7 +146,7 @@ class Segmeter(QDialog):
                     cv2.circle(flooded, self.seed_pt, 1, self.base_color, -1)
 
             self.f_image = flooded
-            self.update_image()
+            self.update_f_image()
         except Exception as e:
             print(e)
 
@@ -160,25 +159,30 @@ class Segmeter(QDialog):
             print("sss", self.seed_pt)
             flooded = self.f_image.copy()
             if isLeft:
-                cv2.circle(flooded, self.seed_pt, 2, self.base_color, -1)
+                cv2.circle(flooded, self.seed_pt, 1, self.base_color, -1)
+                cv2.circle(self.image, self.seed_pt, 1, self.base_color, -1)
 
-            # else:
-            #     ss = flooded[self.seed_pt[1], self.seed_pt[0]]
-            #     if not np.array_equal(ss, [0, 0, 0]):
-            #         cv2.circle(flooded, self.seed_pt, 1, self.base_color, -1)
+            else:
+                if not np.array_equal(flooded[self.seed_pt[1], self.seed_pt[0]], [0, 0, 0]):
+                    cv2.circle(flooded, self.seed_pt, 1, self.base_color, -1)
+                    cv2.circle(self.image, self.seed_pt, 2, self.base_color, -1)
 
             self.f_image = flooded
-            self.update_image()
+            self.update_f_image()
+            self.update_org_image()
         except Exception as e:
             print(e)
 
-    def update_image(self):
+    def update_f_image(self):
         try:
-            fimg = QImage(self.f_image, self.f_image.shape[1], self.f_image.shape[0], self.f_image.strides[0],
-                          get_image_format(self.f_image))
-            fimg = fimg.rgbSwapped()
-            self.f_view.setPixmap(QPixmap.fromImage(fimg))
-            self.f_view.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+            self.show_image(self.f_view, self.f_image)
+        except Exception as e:
+            print(e)
+
+    def update_org_image(self):
+        try:
+            # Show original Photo
+            self.show_image(self.orgImg, self.image)
         except Exception as e:
             print(e)
 
@@ -333,10 +337,29 @@ class Segmeter(QDialog):
                     x = int(point.x())
                     y = int(point.y())
                     self.seed_pt = x, y
-                    print("ssss", source.objectName())
                     self.floodfill_()
                 except Exception as e:
                     print(e)
+        elif source==self.orgImg:
+            if event.type() == QEvent.MouseMove:
+                if event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 3:
+                    try:
+                        point = QtCore.QPoint(event.pos())
+                        x = int(point.x())
+                        y = int(point.y())
+                        self.seed_pt = x, y
+                        self.points_original(True)
+                    except Exception as e:
+                        print(e)
+                elif event.buttons() == QtCore.Qt.RightButton and self.selected_tool == 3:
+                    try:
+                        point = QtCore.QPoint(event.pos())
+                        x = int(point.x())
+                        y = int(point.y())
+                        self.seed_pt = x, y
+                        self.points_original(False)
+                    except Exception as e:
+                        print(e)
         return False
 
 
