@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="toolTip">
+   <string/>
+  </property>
   <widget class="QPushButton" name="prvBtn">
    <property name="geometry">
     <rect>
@@ -23,7 +26,7 @@
     </rect>
    </property>
    <property name="toolTip">
-    <string>Ctrl+Shift+A</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Previase image&lt;/p&gt;&lt;p&gt;Ctrl+Shift+A&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
     <string>Prev</string>
@@ -85,6 +88,9 @@
      <width>221</width>
      <height>41</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>Filters</string>
    </property>
    <property name="title">
     <string>Filters</string>
@@ -160,7 +166,7 @@
     </rect>
    </property>
    <property name="toolTip">
-    <string>Ctrl+Shift+Z</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Next image&lt;/p&gt;&lt;p&gt;Ctrl+Shift+Z&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
     <string>Next </string>
@@ -179,7 +185,7 @@
     </rect>
    </property>
    <property name="toolTip">
-    <string>Ctrl+S</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save&lt;/p&gt;&lt;p&gt;Ctrl+S&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
     <string>Save</string>
@@ -198,7 +204,7 @@
     </rect>
    </property>
    <property name="toolTip">
-    <string>Ctrl+O</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Open&lt;/p&gt;&lt;p&gt;Ctrl+O&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
     <string>Open</string>
@@ -217,7 +223,7 @@
     </rect>
    </property>
    <property name="toolTip">
-    <string>Ctrl+Shift+O</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Open dir&lt;/p&gt;&lt;p&gt;Ctrl+Shift+O&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
     <string>Open dir</string>
@@ -445,7 +451,7 @@
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Ctrl+X</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Flood fill&lt;/p&gt;&lt;p&gt;Ctrl+X&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
        <string/>
@@ -480,7 +486,7 @@
        <bool>false</bool>
       </property>
       <property name="toolTip">
-       <string>Ctrl+Shift+D</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pincel&lt;/p&gt;&lt;p&gt;Ctrl+C&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="text">
        <string/>
@@ -496,7 +502,7 @@
        </size>
       </property>
       <property name="shortcut">
-       <string>Ctrl+Shift+D</string>
+       <string>Ctrl+C</string>
       </property>
       <property name="autoDefault">
        <bool>true</bool>
