@@ -136,10 +136,10 @@ class Segmeter(QDialog):
                 return
 
             flooded = self.f_image.copy()
-            print("s22sss",self.seed_pt)
+            print("s22sss", self.seed_pt)
 
             if isLeft:
-                cv2.circle(flooded, self.seed_pt, 2, self.base_color, -1)
+                cv2.circle(flooded, self.seed_pt, 1, self.base_color, -1)
 
             else:
                 ss = flooded[self.seed_pt[1], self.seed_pt[0]]
@@ -157,7 +157,7 @@ class Segmeter(QDialog):
                 return
             if self.seed_pt == None:
                 return
-            print("sss",self.seed_pt)
+            print("sss", self.seed_pt)
             flooded = self.f_image.copy()
             if isLeft:
                 cv2.circle(flooded, self.seed_pt, 2, self.base_color, -1)
@@ -307,56 +307,37 @@ class Segmeter(QDialog):
 
     # Add Filter on the events
     def eventFilter(self, source, event):
-
-        if event.type() == QEvent.MouseMove:
-            if event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 2:
+        if source == self.f_view:
+            if event.type() == QEvent.MouseMove:
+                if event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 2:
+                    try:
+                        point = QtCore.QPoint(event.pos())
+                        x = int(point.x())
+                        y = int(point.y())
+                        self.seed_pt = x, y
+                        self.points_(True)
+                    except Exception as e:
+                        print(e)
+                elif event.buttons() == QtCore.Qt.RightButton and self.selected_tool == 2:
+                    try:
+                        point = QtCore.QPoint(event.pos())
+                        x = int(point.x())
+                        y = int(point.y())
+                        self.seed_pt = x, y
+                        self.points_(False)
+                    except Exception as e:
+                        print(e)
+            elif event.type() == QEvent.MouseButtonPress and event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 1:
                 try:
                     point = QtCore.QPoint(event.pos())
                     x = int(point.x())
                     y = int(point.y())
-                    self.seed_pt = x - 530, y - 70
-                    if 530 <= x <= 1042:
-                        if 70 <= y <= 454:
-                            self.points_(True)
+                    self.seed_pt = x, y
+                    print("ssss", source.objectName())
+                    self.floodfill_()
                 except Exception as e:
                     print(e)
-            if event.buttons() == QtCore.Qt.RightButton and self.selected_tool == 2:
-                try:
-                    point = QtCore.QPoint(event.pos())
-                    x = int(point.x())
-                    y = int(point.y())
-                    self.seed_pt = x - 530, y - 70
-                    if 530 <= x <= 1042:
-                        if 70 <= y <= 454:
-                            self.points_(False)
-                except Exception as e:
-                    print(e)
-            if event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 3:
-                try:
-                    point = QtCore.QPoint(event.pos())
-                    x = int(point.x())
-                    y = int(point.y())
-                    if 11 <= x <= 523:
-                        if 70 <= y <= 454:
-                            self.seed_pt = x - 11, y - 70
-                            self.points_original(True)
-                except Exception as e:
-                    print(e)
-        elif event.type() == QEvent.MouseButtonPress and event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 1:
-            try:
-                point = QtCore.QPoint(event.pos())
-                x = int(point.x())
-                y = int(point.y())
-                self.seed_pt = x - 530, y - 70
-                if 530 <= x <= 1042:
-                    if 70 <= y <= 454:
-                        if self.selected_tool == 1:
-                            self.floodfill_()
-                # if self.imgQ.isUnderMouse():
-                #     self.photoClicked.emit(QtCore.QPoint(event.pos()))
-            except Exception as e:
-                print(e)
-        return QtGui.QMainWindow.eventFilter(self, source, event)
+        return False
 
 
 app = QApplication(sys.argv)
