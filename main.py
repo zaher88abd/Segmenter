@@ -50,6 +50,7 @@ class Segmeter(QDialog):
 
             self.fillBtn.clicked.connect(self.fill_tool)
             self.pencilBtn.clicked.connect(self.pencil_tool)
+            self.pencilSBtn.clicked.connect(self.pencil_s_tool)
 
             self.radBtnEG.clicked.connect(lambda: self.rd_btn_check(self.radBtnEG))
             self.radBtnNDI.clicked.connect(lambda: self.rd_btn_check(self.radBtnNDI))
@@ -80,6 +81,10 @@ class Segmeter(QDialog):
         self.selected_tool = 2
         pass
 
+    def pencil_s_tool(self):
+        self.selected_tool = 3
+        pass
+
     def set_black_color(self):
         self.base_color = (0, 0, 0)
         self.color_selected.setStyleSheet("background-color: black")
@@ -104,23 +109,6 @@ class Segmeter(QDialog):
         self.base_color = (0, 0, 255)
         self.color_selected.setStyleSheet("background-color: red")
 
-    # def mousePressEvent(self, event):
-    #     try:
-    #         point = QtCore.QPoint(event.pos())
-    #         x = int(point.x())
-    #         y = int(point.y())
-    #
-    #         self.seed_pt = x - 530, y - 70
-    #         if 530 <= x <= 1042:
-    #             if 70 <= y <= 454:
-    #                 if self.selected_tool == 1:
-    #                     self.floodfill_()
-    #         # if self.imgQ.isUnderMouse():
-    #         #     self.photoClicked.emit(QtCore.QPoint(event.pos()))
-    #         super(Segmeter, self).mousePressEvent(event)
-    #     except Exception as e:
-    #         print(e)
-
     def floodfill_(self):
         try:
             if not hasattr(self, 'f_image'):
@@ -140,7 +128,7 @@ class Segmeter(QDialog):
         except Exception as e:
             print(e)
 
-    def points_(self):
+    def points_(self, isLeft):
         try:
             if not hasattr(self, 'f_image'):
                 return
@@ -148,8 +136,35 @@ class Segmeter(QDialog):
                 return
 
             flooded = self.f_image.copy()
+            if isLeft:
+                cv2.circle(flooded, self.seed_pt, 2, self.base_color, -1)
 
-            cv2.circle(flooded, self.seed_pt, 2, self.base_color, -1)
+            else:
+                ss = flooded[self.seed_pt[1], self.seed_pt[0]]
+                if not np.array_equal(ss, [0, 0, 0]):
+                    cv2.circle(flooded, self.seed_pt, 1, self.base_color, -1)
+
+            self.f_image = flooded
+            self.update_image()
+        except Exception as e:
+            print(e)
+
+    def points_original(self, isLeft):
+        try:
+            if not hasattr(self, 'f_image'):
+                return
+            if self.seed_pt == None:
+                return
+            print("sss",self.seed_pt)
+            flooded = self.f_image.copy()
+            if isLeft:
+                cv2.circle(flooded, self.seed_pt, 2, self.base_color, -1)
+
+            # else:
+            #     ss = flooded[self.seed_pt[1], self.seed_pt[0]]
+            #     if not np.array_equal(ss, [0, 0, 0]):
+            #         cv2.circle(flooded, self.seed_pt, 1, self.base_color, -1)
+
             self.f_image = flooded
             self.update_image()
         except Exception as e:
@@ -199,13 +214,15 @@ class Segmeter(QDialog):
         except Exception as e:
             print(e)
 
+    # Save the filtred Image
     def save_current_segment(self):
         if self.saved_dir is None:
-            self.saved_dir = QFileDialog.getExistingDirectory(self, "Open a folder", "*.jpg", QFileDialog.ShowDirsOnly)
+            self.saved_dir = QFileDialog.getExistingDirectory(self, "Save an image", "*.jpg", QFileDialog.ShowDirsOnly)
         file_name = os.path.join(self.saved_dir, self.files[self.currentInd])
         print("Save name", file_name)
         cv2.imwrite(file_name, self.f_image)
 
+    # Show the next image in the list and save the current one if there
     def next_image(self):
         try:
             self.save_current_segment()
@@ -217,6 +234,7 @@ class Segmeter(QDialog):
         except Exception as e:
             print(e)
 
+    # Show the privese image in the list and save the current one if there
     def prv_image(self):
         try:
             self.save_current_segment()
@@ -228,6 +246,7 @@ class Segmeter(QDialog):
         except Exception as e:
             print(e)
 
+    # load read image and load it with selected filter
     def load_image(self, current_image=False):
         if current_image:
             self.file_name = self.dir + "/" + self.files[self.currentInd]
@@ -239,6 +258,7 @@ class Segmeter(QDialog):
         self.image = cv2.imread(self.file_name)
         self.display_image()
 
+    # put image at widget
     @staticmethod
     def show_image(widget, img):
         widget.setPixmap(QPixmap.fromImage(
@@ -246,6 +266,7 @@ class Segmeter(QDialog):
                    , img.strides[0], get_image_format(img)).rgbSwapped()))
         widget.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
 
+    # read image from attr and show them at UI
     def display_image(self):
         try:
             if self.f_image is None:
@@ -282,7 +303,9 @@ class Segmeter(QDialog):
         except Exception as e:
             print(e)
 
+    # Add Filter on the events
     def eventFilter(self, source, event):
+
         if event.type() == QEvent.MouseMove:
             if event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 2:
                 try:
@@ -292,7 +315,7 @@ class Segmeter(QDialog):
                     self.seed_pt = x - 530, y - 70
                     if 530 <= x <= 1042:
                         if 70 <= y <= 454:
-                            self.points_()
+                            self.points_(True)
                 except Exception as e:
                     print(e)
             if event.buttons() == QtCore.Qt.RightButton and self.selected_tool == 2:
@@ -300,12 +323,24 @@ class Segmeter(QDialog):
                     point = QtCore.QPoint(event.pos())
                     x = int(point.x())
                     y = int(point.y())
-
                     self.seed_pt = x - 530, y - 70
                     if 530 <= x <= 1042:
                         if 70 <= y <= 454:
-                            if not np.array_equal(self.f_image[y - 70, x - 530], [0, 0, 0]):
-                                self.points_()
+                            self.points_(False)
+                except Exception as e:
+                    print(e)
+            if event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 3:
+                try:
+                    print("B_________________")
+                    point = QtCore.QPoint(event.pos())
+                    x = int(point.x())
+                    y = int(point.y()) 
+                    if 11 <= x <= 523:
+                        if 70 <= y <= 454:
+
+                            self.seed_pt = x - 11, y - 70
+                            self.points_original(True)
+                    print("E_________________")
                 except Exception as e:
                     print(e)
         elif event.type() == QEvent.MouseButtonPress and event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 1:
@@ -313,8 +348,7 @@ class Segmeter(QDialog):
                 point = QtCore.QPoint(event.pos())
                 x = int(point.x())
                 y = int(point.y())
-
-                self.seed_pt = x - 530, y - 70
+                self.seed_pt = x - 11, y - 70
                 if 530 <= x <= 1042:
                     if 70 <= y <= 454:
                         if self.selected_tool == 1:
