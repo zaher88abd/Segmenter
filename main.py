@@ -136,6 +136,8 @@ class Segmeter(QDialog):
                 return
 
             flooded = self.f_image.copy()
+            print("s22sss",self.seed_pt)
+
             if isLeft:
                 cv2.circle(flooded, self.seed_pt, 2, self.base_color, -1)
 
@@ -331,16 +333,13 @@ class Segmeter(QDialog):
                     print(e)
             if event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 3:
                 try:
-                    print("B_________________")
                     point = QtCore.QPoint(event.pos())
                     x = int(point.x())
-                    y = int(point.y()) 
+                    y = int(point.y())
                     if 11 <= x <= 523:
                         if 70 <= y <= 454:
-
                             self.seed_pt = x - 11, y - 70
                             self.points_original(True)
-                    print("E_________________")
                 except Exception as e:
                     print(e)
         elif event.type() == QEvent.MouseButtonPress and event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 1:
@@ -348,7 +347,7 @@ class Segmeter(QDialog):
                 point = QtCore.QPoint(event.pos())
                 x = int(point.x())
                 y = int(point.y())
-                self.seed_pt = x - 11, y - 70
+                self.seed_pt = x - 530, y - 70
                 if 530 <= x <= 1042:
                     if 70 <= y <= 454:
                         if self.selected_tool == 1:
