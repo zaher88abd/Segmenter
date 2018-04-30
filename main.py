@@ -378,9 +378,11 @@ class Segmeter(QDialog):
         return False
 
 
-app = QApplication(sys.argv)
-window = Segmeter()
-window.setWindowTitle("Segmeter")
-window.show()
-app.installEventFilter(window)
-sys.exit(app.exec_())
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = Segmeter()
+    window.setWindowTitle("Segmeter")
+    window.show()
+    app.installEventFilter(window)
+    sys.exit(app.exec_())
+    main()
