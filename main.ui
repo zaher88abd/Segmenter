@@ -19,10 +19,10 @@
   <widget class="QPushButton" name="prvBtn">
    <property name="geometry">
     <rect>
-     <x>240</x>
+     <x>864</x>
      <y>20</y>
-     <width>75</width>
-     <height>23</height>
+     <width>81</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="toolTip">
@@ -95,7 +95,7 @@
    <property name="title">
     <string>Filters</string>
    </property>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -230,24 +230,14 @@
      </item>
     </layout>
    </widget>
-   <zorder>radBtnNDI</zorder>
-   <zorder>radBtnEG</zorder>
-   <zorder>radBtnNon</zorder>
-   <zorder>f_view</zorder>
-   <zorder>radBtnCive</zorder>
-   <zorder>radBtnExred</zorder>
-   <zorder>radBtnNdi</zorder>
-   <zorder>radBtnHsv</zorder>
-   <zorder>radBtnEdges</zorder>
-   <zorder>radBtnLaplacian</zorder>
   </widget>
   <widget class="QPushButton" name="nextBtn">
    <property name="geometry">
     <rect>
-     <x>320</x>
+     <x>950</x>
      <y>20</y>
-     <width>75</width>
-     <height>23</height>
+     <width>91</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="toolTip">
@@ -263,10 +253,10 @@
   <widget class="QPushButton" name="saveBtn">
    <property name="geometry">
     <rect>
-     <x>790</x>
+     <x>230</x>
      <y>20</y>
-     <width>75</width>
-     <height>23</height>
+     <width>91</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="toolTip">
@@ -282,10 +272,10 @@
   <widget class="QPushButton" name="openBtn">
    <property name="geometry">
     <rect>
-     <x>880</x>
+     <x>330</x>
      <y>20</y>
-     <width>75</width>
-     <height>23</height>
+     <width>91</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="toolTip">
@@ -301,10 +291,10 @@
   <widget class="QPushButton" name="openBtnDir">
    <property name="geometry">
     <rect>
-     <x>960</x>
+     <x>430</x>
      <y>20</y>
-     <width>75</width>
-     <height>23</height>
+     <width>91</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="toolTip">
@@ -342,7 +332,7 @@
      <x>1050</x>
      <y>370</y>
      <width>81</width>
-     <height>81</height>
+     <height>83</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -507,7 +497,7 @@
      <x>1050</x>
      <y>20</y>
      <width>81</width>
-     <height>91</height>
+     <height>93</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
