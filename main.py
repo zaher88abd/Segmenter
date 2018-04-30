@@ -52,21 +52,37 @@ class Segmeter(QDialog):
             self.pencilBtn.clicked.connect(self.pencil_tool)
             self.pencilSBtn.clicked.connect(self.pencil_s_tool)
 
-            self.radBtnEG.clicked.connect(lambda: self.rd_btn_check(self.radBtnEG))
-            self.radBtnNDI.clicked.connect(lambda: self.rd_btn_check(self.radBtnNDI))
-            self.radBtnNon.clicked.connect(lambda: self.rd_btn_check(self.radBtnNon))
+            # self.radBtnEG.clicked.connect(lambda: self.rd_btn_check(self.radBtnEG))
+            # self.radBtnNDI.clicked.connect(lambda: self.rd_btn_check(self.radBtnNDI))
+            # self.radBtnNon.clicked.connect(lambda: self.rd_btn_check(self.radBtnNon))
 
+            self.radBtnNon.filter_number = 0
+            self.radBtnNon.toggled.connect(self.rd_btn_check)
+            self.radBtnEG.filter_number = 1
+            self.radBtnEG.toggled.connect(self.rd_btn_check)
+            self.radBtnNDI.filter_number = 2
+            self.radBtnNDI.toggled.connect(self.rd_btn_check)
+            self.radBtnCive.filter_number = 3
+            self.radBtnCive.toggled.connect(self.rd_btn_check)
+            self.radBtnExred.filter_number = 4
+            self.radBtnExred.toggled.connect(self.rd_btn_check)
+            self.radBtnNdi.filter_number = 5
+            self.radBtnNdi.toggled.connect(self.rd_btn_check)
+            self.radBtnHsv.filter_number = 6
+            self.radBtnHsv.toggled.connect(self.rd_btn_check)
+            self.radBtnEdges.filter_number = 7
+            self.radBtnEdges.toggled.connect(self.rd_btn_check)
+            self.radBtnLaplacian.filter_number = 8
+            self.radBtnLaplacian.toggled.connect(self.rd_btn_check)
         except Exception as e:
             print(e)
 
-    def rd_btn_check(self, rad):
-        if rad.objectName() in "radBtnNon":
-            self.filter_number = 0
-            return
-        elif rad.objectName() in "radBtnNDI":
-            self.filter_number = 2
-        elif rad.objectName() in "radBtnEG":
-            self.filter_number = 1
+    def rd_btn_check(self):
+        rd_btn = self.sender()
+        if rd_btn.isChecked():
+            self.filter_number = rd_btn.filter_number
+            self.display_image()
+        pass
 
     def save_image(self):
         file_name = QFileDialog.getSaveFileName(self, 'Dialog Save')
@@ -275,8 +291,7 @@ class Segmeter(QDialog):
     # read image from attr and show them at UI
     def display_image(self):
         try:
-            if self.f_image is None:
-                self.f_image = filter_image(self.image, self.filter_number)
+            self.f_image = filter_image(self.image, self.filter_number)
 
             height, width = self.image.shape[:2]
             max_height = 384
@@ -296,10 +311,10 @@ class Segmeter(QDialog):
             self.show_image(self.orgImg, self.image)
 
             # Show filtered photo
-            if self.filter_number == 1:
+            if self.f_image.ndim == 2:
                 if not self.f_image.dtype == 'uint8':
                     self.f_image = np.uint8(self.f_image)
-                    self.f_image = covertGrayRGB(self.f_image)
+                self.f_image = covertGrayRGB(self.f_image)
             self.show_image(self.f_view, self.f_image)
 
             h, w = self.f_image.shape[:2]
