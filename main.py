@@ -124,7 +124,7 @@ class Segmeter(QDialog):
 
             cv2.floodFill(flooded, self.mask, self.seed_pt, self.base_color, (20,) * 3, (20,) * 3, flags)
             self.f_image = flooded
-            self.update_image()
+            self.update_f_image()
         except Exception as e:
             print(e)
 
@@ -340,7 +340,7 @@ class Segmeter(QDialog):
                     self.floodfill_()
                 except Exception as e:
                     print(e)
-        elif source==self.orgImg:
+        elif source == self.orgImg:
             if event.type() == QEvent.MouseMove:
                 if event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 3:
                     try:
