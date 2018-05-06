@@ -51,6 +51,7 @@ class Segmeter(QDialog):
             self.fillBtn.clicked.connect(self.fill_tool)
             self.pencilBtn.clicked.connect(self.pencil_tool)
             self.pencilSBtn.clicked.connect(self.pencil_s_tool)
+            self.cleanBtn.clicked.connect(self.clean_image)
 
             # self.radBtnEG.clicked.connect(lambda: self.rd_btn_check(self.radBtnEG))
             # self.radBtnNDI.clicked.connect(lambda: self.rd_btn_check(self.radBtnNDI))
@@ -323,6 +324,11 @@ class Segmeter(QDialog):
             self.color = 0
         except Exception as e:
             print(e)
+
+    def clean_image(self):
+        ss = np.where((self.f_image == [255, 255, 255]).all(axis=2))
+        self.f_image[ss] = [0, 0, 0]
+        self.update_f_image()
 
     # Add Filter on the events
     def eventFilter(self, source, event):

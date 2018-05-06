@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1143</width>
+    <width>1226</width>
     <height>459</height>
    </rect>
   </property>
@@ -496,7 +496,7 @@
     <rect>
      <x>1050</x>
      <y>20</y>
-     <width>81</width>
+     <width>72</width>
      <height>93</height>
     </rect>
    </property>
@@ -619,6 +619,17 @@
       </property>
       <property name="flat">
        <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QPushButton" name="cleanBtn">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>icons/Clear-icon.png</normaloff>icons/Clear-icon.png</iconset>
       </property>
      </widget>
     </item>
