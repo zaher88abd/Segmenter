@@ -20,12 +20,14 @@ class Segmeter(QDialog):
         self.currentInd = 0
         self.files = []
         self.filter_number = 1
+        self.actionList=[]
         self.saved_dir = None
         self.base_color = (255, 255, 255)
         self.selected_tool = 0  # nothing
         try:
             super().__init__()
             loadUi('main.ui', self)
+            self.undoBtn.clicked.connect(self.undo)
             self.image = None
             self.openBtn.clicked.connect(self.openFile)
             self.openBtnDir.clicked.connect(self.open_dir)
@@ -90,7 +92,15 @@ class Segmeter(QDialog):
         self.file_name = file_name[0]
         print("Save name", file_name)
         cv2.imwrite(file_name[0], self.f_image)
-
+    
+    def undo(self):
+        print("undoing")
+        try:
+            self.f_image = self.actionList.pop()
+            self.update_f_image()
+        except IndexError:
+            print ("Nothing to undo")
+    
     def fill_tool(self):
         self.selected_tool = 1
 
@@ -132,8 +142,9 @@ class Segmeter(QDialog):
                 return
             if self.seed_pt == None:
                 return
-
             flooded = self.f_image.copy()
+            self.actionList.append(self.f_image)
+
             self.mask[:] = 0
             flags = self.connectivity
             if True:  # fixed_range
@@ -151,7 +162,7 @@ class Segmeter(QDialog):
                 return
             if self.seed_pt == None:
                 return
-
+            self.actionList.append(self.f_image)
             flooded = self.f_image.copy()
 
             if isLeft:
@@ -174,6 +185,7 @@ class Segmeter(QDialog):
             if self.seed_pt == None:
                 return
             print("sss", self.seed_pt)
+            self.actionList.append(self.f_image)
             flooded = self.f_image.copy()
             if isLeft:
                 cv2.circle(flooded, self.seed_pt, 1, self.base_color, -1)
@@ -254,6 +266,7 @@ class Segmeter(QDialog):
                 self.currentInd = 0
                 # self.initUI()
             self.load_image(current_image=True)
+            self.actionList=[]
         except Exception as e:
             print(e)
 
@@ -266,6 +279,7 @@ class Segmeter(QDialog):
                 self.currentInd = len(self.files) - 1
                 # self.initUI()
             self.load_image(current_image=True)
+            self.actionList=[]
         except Exception as e:
             print(e)
 
@@ -301,8 +315,8 @@ class Segmeter(QDialog):
                 self.f_image = filter_image(self.image, self.filter_number)
 
             height, width = self.image.shape[:2]
-            max_height = 384
-            max_width = 512
+            max_height = 900
+            max_width = 900
 
             # only shrink if img is bigger than required
             if max_height < height or max_width < width:

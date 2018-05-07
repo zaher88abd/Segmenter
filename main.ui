@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1226</width>
-    <height>459</height>
+    <width>1508</width>
+    <height>852</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
   <widget class="QPushButton" name="prvBtn">
    <property name="geometry">
     <rect>
-     <x>864</x>
+     <x>1044</x>
      <y>20</y>
      <width>81</width>
      <height>41</height>
@@ -40,8 +40,8 @@
     <rect>
      <x>11</x>
      <y>70</y>
-     <width>512</width>
-     <height>384</height>
+     <width>711</width>
+     <height>761</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -58,9 +58,9 @@
    <property name="geometry">
     <rect>
      <x>11</x>
-     <y>50</y>
-     <width>81</width>
-     <height>16</height>
+     <y>45</y>
+     <width>131</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="text">
@@ -70,10 +70,10 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>530</x>
-     <y>50</y>
-     <width>81</width>
-     <height>16</height>
+     <x>780</x>
+     <y>60</y>
+     <width>101</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
@@ -83,10 +83,10 @@
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>1050</x>
-     <y>120</y>
-     <width>81</width>
-     <height>241</height>
+     <x>890</x>
+     <y>520</y>
+     <width>311</width>
+     <height>281</height>
     </rect>
    </property>
    <property name="toolTip">
@@ -98,10 +98,10 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>20</y>
-      <width>66</width>
-      <height>211</height>
+      <x>30</x>
+      <y>30</y>
+      <width>131</width>
+      <height>251</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -234,7 +234,7 @@
   <widget class="QPushButton" name="nextBtn">
    <property name="geometry">
     <rect>
-     <x>950</x>
+     <x>1130</x>
      <y>20</y>
      <width>91</width>
      <height>41</height>
@@ -310,8 +310,8 @@
   <widget class="QLabel" name="f_view">
    <property name="geometry">
     <rect>
-     <x>530</x>
-     <y>70</y>
+     <x>780</x>
+     <y>90</y>
      <width>512</width>
      <height>384</height>
     </rect>
@@ -329,10 +329,10 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>1050</x>
-     <y>370</y>
-     <width>81</width>
-     <height>83</height>
+     <x>1330</x>
+     <y>580</y>
+     <width>124</width>
+     <height>128</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -374,31 +374,6 @@
       </property>
       <property name="shortcut">
        <string>Ctrl+Shift+2</string>
-      </property>
-      <property name="autoDefault">
-       <bool>true</bool>
-      </property>
-      <property name="default">
-       <bool>true</bool>
-      </property>
-      <property name="flat">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QPushButton" name="whiteBtn">
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Ctrl+Shift+3</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="shortcut">
-       <string>Ctrl+Shift+3</string>
       </property>
       <property name="autoDefault">
        <bool>true</bool>
@@ -489,15 +464,40 @@
       </property>
      </widget>
     </item>
+    <item row="1" column="0">
+     <widget class="QPushButton" name="whiteBtn">
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>Ctrl+Shift+3</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+Shift+3</string>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>1050</x>
-     <y>20</y>
-     <width>72</width>
-     <height>93</height>
+     <x>1350</x>
+     <y>390</y>
+     <width>92</width>
+     <height>101</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
@@ -674,7 +674,7 @@
   <widget class="QPushButton" name="undoBtn">
    <property name="geometry">
     <rect>
-     <x>620</x>
+     <x>800</x>
      <y>20</y>
      <width>75</width>
      <height>23</height>
@@ -683,11 +683,20 @@
    <property name="text">
     <string>undoBtn</string>
    </property>
+   <property name="autoRepeat">
+    <bool>true</bool>
+   </property>
+   <property name="autoRepeatDelay">
+    <number>300</number>
+   </property>
+   <property name="autoRepeatInterval">
+    <number>50</number>
+   </property>
   </widget>
   <widget class="QPushButton" name="redoBtn">
    <property name="geometry">
     <rect>
-     <x>710</x>
+     <x>890</x>
      <y>20</y>
      <width>75</width>
      <height>23</height>
