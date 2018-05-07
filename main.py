@@ -188,17 +188,17 @@ class Segmeter(QDialog):
                 return
             if self.seed_pt == None:
                 return
-            print("sss", self.seed_pt)
+            point_size = self.horizontalSlider.value()
             self.actionList.append(self.f_image)
             flooded = self.f_image.copy()
             if isLeft:
-                cv2.circle(flooded, self.seed_pt, 1, self.base_color, -1)
-                cv2.circle(self.image, self.seed_pt, 1, self.base_color, -1)
+                cv2.circle(flooded, self.seed_pt, point_size, self.base_color, -1)
+                cv2.circle(self.image, self.seed_pt, point_size, self.base_color, -1)
 
             else:
                 if not np.array_equal(flooded[self.seed_pt[1], self.seed_pt[0]], [0, 0, 0]):
-                    cv2.circle(flooded, self.seed_pt, 1, self.base_color, -1)
-                    cv2.circle(self.image, self.seed_pt, 2, self.base_color, -1)
+                    cv2.circle(flooded, self.seed_pt, point_size, self.base_color, -1)
+                    cv2.circle(self.image, self.seed_pt, point_size, self.base_color, -1)
 
             self.f_image = flooded
             self.update_f_image()
@@ -303,7 +303,6 @@ class Segmeter(QDialog):
     # put image at widget
     @staticmethod
     def show_image(widget, img):
-        print("show_image", np.shape(img))
         widget.setPixmap(QPixmap.fromImage(
             QImage(img, img.shape[1], img.shape[0]
                    , img.strides[0], get_image_format(img)).rgbSwapped()))
