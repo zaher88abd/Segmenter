@@ -1,5 +1,8 @@
 import lib.plant_features as pf
 import lib.augment_data as ad
+import numpy as np
+
+BLUE = np.array([255, 0, 0])
 
 
 def filter_image(original_img, filter_num):
@@ -37,9 +40,16 @@ def filter_image(original_img, filter_num):
 
     # ndi
     if filter_num == 5:
-        return pf.ndi(rgb_img)
+        hsv = hsv(rgb_img)
 
-    # Hsv
+        lower_black = np.array([50, 50, 50], dtype="uint16")
+        upper_black = np.array([100, 255, 100], dtype="uint16")
+        mask = cv2.inRange(hsv, lower_black, upper_black)
+        img = np.zeros((mask.shape[0], mask.shape[1], 3))
+        img[np.where(mask == 255)] = BLUE
+        return img
+
+        # Hsv
     if filter_num == 6:
         return pf.hsv(rgb_img)
 
@@ -50,5 +60,3 @@ def filter_image(original_img, filter_num):
     # laplacian
     if filter_num == 8:
         return pf.laplacian(rgb_img)
-
-

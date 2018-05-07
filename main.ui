@@ -83,9 +83,9 @@
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>890</x>
-     <y>520</y>
-     <width>311</width>
+     <x>1320</x>
+     <y>70</y>
+     <width>171</width>
      <height>281</height>
     </rect>
    </property>
@@ -163,13 +163,13 @@
      <item>
       <widget class="QRadioButton" name="radBtnNdi">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="toolTip">
         <string>Ctrl+Shift+F, 2</string>
        </property>
        <property name="text">
-        <string>Ndi</string>
+        <string>Green</string>
        </property>
        <property name="shortcut">
         <string>Ctrl+Shift+F, 2</string>
