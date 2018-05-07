@@ -278,6 +278,7 @@ class Segmeter(QDialog):
             self.f_image = cv2.imread(os.path.join(self.saved_dir, self.files[self.currentInd]))
         else:
             self.f_image = None
+        self.filename.setText(self.files[self.currentInd])
         self.image = cv2.imread(self.file_name)
         self.display_image()
 
