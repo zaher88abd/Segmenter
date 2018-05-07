@@ -20,7 +20,7 @@ class Segmeter(QDialog):
         self.currentInd = 0
         self.files = []
         self.filter_number = 1
-        self.actionList=[]
+        self.actionList = []
         self.saved_dir = None
         self.base_color = (255, 255, 255)
         self.selected_tool = 0  # nothing
@@ -54,6 +54,7 @@ class Segmeter(QDialog):
             self.pencilBtn.clicked.connect(self.pencil_tool)
             self.pencilSBtn.clicked.connect(self.pencil_s_tool)
             self.cleanBtn.clicked.connect(self.clean_image)
+            self.cleanBtn_2.clicked.connect(self.clean_image_2)
 
             # self.radBtnEG.clicked.connect(lambda: self.rd_btn_check(self.radBtnEG))
             # self.radBtnNDI.clicked.connect(lambda: self.rd_btn_check(self.radBtnNDI))
@@ -77,6 +78,7 @@ class Segmeter(QDialog):
             self.radBtnEdges.toggled.connect(self.rd_btn_check)
             self.radBtnLaplacian.filter_number = 8
             self.radBtnLaplacian.toggled.connect(self.rd_btn_check)
+
         except Exception as e:
             print(e)
 
@@ -92,15 +94,15 @@ class Segmeter(QDialog):
         self.file_name = file_name[0]
         print("Save name", file_name)
         cv2.imwrite(file_name[0], self.f_image)
-    
+
     def undo(self):
         print("undoing")
         try:
             self.f_image = self.actionList.pop()
             self.update_f_image()
         except IndexError:
-            print ("Nothing to undo")
-    
+            print("Nothing to undo")
+
     def fill_tool(self):
         self.selected_tool = 1
 
@@ -165,13 +167,15 @@ class Segmeter(QDialog):
             self.actionList.append(self.f_image)
             flooded = self.f_image.copy()
 
+            point_size = self.horizontalSlider.value()
+
             if isLeft:
-                cv2.circle(flooded, self.seed_pt, 1, self.base_color, -1)
+                cv2.circle(flooded, self.seed_pt, point_size, self.base_color, -1)
 
             else:
                 ss = flooded[self.seed_pt[1], self.seed_pt[0]]
                 if not np.array_equal(ss, [0, 0, 0]):
-                    cv2.circle(flooded, self.seed_pt, 1, self.base_color, -1)
+                    cv2.circle(flooded, self.seed_pt, point_size, self.base_color, -1)
 
             self.f_image = flooded
             self.update_f_image()
@@ -266,7 +270,7 @@ class Segmeter(QDialog):
                 self.currentInd = 0
                 # self.initUI()
             self.load_image(current_image=True)
-            self.actionList=[]
+            self.actionList = []
         except Exception as e:
             print(e)
 
@@ -279,7 +283,7 @@ class Segmeter(QDialog):
                 self.currentInd = len(self.files) - 1
                 # self.initUI()
             self.load_image(current_image=True)
-            self.actionList=[]
+            self.actionList = []
         except Exception as e:
             print(e)
 
@@ -299,6 +303,7 @@ class Segmeter(QDialog):
     # put image at widget
     @staticmethod
     def show_image(widget, img):
+        print("show_image", np.shape(img))
         widget.setPixmap(QPixmap.fromImage(
             QImage(img, img.shape[1], img.shape[0]
                    , img.strides[0], get_image_format(img)).rgbSwapped()))
@@ -315,8 +320,8 @@ class Segmeter(QDialog):
                 self.f_image = filter_image(self.image, self.filter_number)
 
             height, width = self.image.shape[:2]
-            max_height = 900
-            max_width = 900
+            max_height = 512
+            max_width = 640
 
             # only shrink if img is bigger than required
             if max_height < height or max_width < width:
@@ -348,6 +353,13 @@ class Segmeter(QDialog):
     def clean_image(self):
         ss = np.where((self.f_image == [255, 255, 255]).all(axis=2))
         self.f_image[ss] = [0, 0, 0]
+        self.update_f_image()
+
+    def clean_image_2(self):
+        ss=np.where((self.f_image == [255, 255, 255]).all(axis=2))
+        self.f_image[ss] = [0, 0, 0]  # clear White color
+        ssd=np.where((self.f_image == [255, 0, 0]).all(axis=2))
+        self.f_image[ssd] = [0, 0, 0]  # clear Blue color
         self.update_f_image()
 
     # Add Filter on the events

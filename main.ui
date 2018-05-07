@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1508</width>
-    <height>852</height>
+    <height>591</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -40,8 +40,8 @@
     <rect>
      <x>11</x>
      <y>70</y>
-     <width>711</width>
-     <height>761</height>
+     <width>640</width>
+     <height>512</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -70,8 +70,8 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>780</x>
-     <y>60</y>
+     <x>660</x>
+     <y>40</y>
      <width>101</width>
      <height>31</height>
     </rect>
@@ -83,8 +83,8 @@
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>1320</x>
-     <y>70</y>
+     <x>1310</x>
+     <y>10</y>
      <width>171</width>
      <height>281</height>
     </rect>
@@ -250,70 +250,13 @@
     <string>Ctrl+Shift+Z</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="saveBtn">
-   <property name="geometry">
-    <rect>
-     <x>230</x>
-     <y>20</y>
-     <width>91</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="toolTip">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save&lt;/p&gt;&lt;p&gt;Ctrl+S&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-   </property>
-   <property name="text">
-    <string>Save</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+S</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="openBtn">
-   <property name="geometry">
-    <rect>
-     <x>330</x>
-     <y>20</y>
-     <width>91</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="toolTip">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Open&lt;/p&gt;&lt;p&gt;Ctrl+O&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-   </property>
-   <property name="text">
-    <string>Open</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+O</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="openBtnDir">
-   <property name="geometry">
-    <rect>
-     <x>430</x>
-     <y>20</y>
-     <width>91</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="toolTip">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Open dir&lt;/p&gt;&lt;p&gt;Ctrl+Shift+O&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-   </property>
-   <property name="text">
-    <string>Open dir</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Shift+O</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="f_view">
    <property name="geometry">
     <rect>
-     <x>780</x>
-     <y>90</y>
-     <width>512</width>
-     <height>384</height>
+     <x>660</x>
+     <y>70</y>
+     <width>640</width>
+     <height>512</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -329,8 +272,8 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>1330</x>
-     <y>580</y>
+     <x>1310</x>
+     <y>450</y>
      <width>124</width>
      <height>128</height>
     </rect>
@@ -494,8 +437,8 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>1350</x>
-     <y>390</y>
+     <x>1310</x>
+     <y>290</y>
      <width>92</width>
      <height>101</height>
     </rect>
@@ -671,40 +614,133 @@
     <string>File name</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="undoBtn">
+  <widget class="QSlider" name="horizontalSlider">
    <property name="geometry">
     <rect>
-     <x>800</x>
-     <y>20</y>
-     <width>75</width>
-     <height>23</height>
+     <x>1310</x>
+     <y>400</y>
+     <width>160</width>
+     <height>22</height>
     </rect>
    </property>
-   <property name="text">
-    <string>undoBtn</string>
+   <property name="minimum">
+    <number>1</number>
    </property>
-   <property name="autoRepeat">
-    <bool>true</bool>
+   <property name="maximum">
+    <number>25</number>
    </property>
-   <property name="autoRepeatDelay">
-    <number>300</number>
+   <property name="pageStep">
+    <number>5</number>
    </property>
-   <property name="autoRepeatInterval">
-    <number>50</number>
+   <property name="value">
+    <number>1</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
    </property>
   </widget>
-  <widget class="QPushButton" name="redoBtn">
+  <widget class="QPushButton" name="cleanBtn_2">
    <property name="geometry">
     <rect>
-     <x>890</x>
-     <y>20</y>
-     <width>75</width>
-     <height>23</height>
+     <x>1410</x>
+     <y>300</y>
+     <width>42</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="text">
-    <string>redoBtn</string>
+    <string/>
    </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/Clear-icon.png</normaloff>icons/Clear-icon.png</iconset>
+   </property>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>368</x>
+     <y>20</y>
+     <width>281</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QPushButton" name="saveBtn">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save&lt;/p&gt;&lt;p&gt;Ctrl+S&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Save</string>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+S</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="openBtn">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Open&lt;/p&gt;&lt;p&gt;Ctrl+O&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Open</string>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+O</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="openBtnDir">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Open dir&lt;/p&gt;&lt;p&gt;Ctrl+Shift+O&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Open dir</string>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+Shift+O</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>730</x>
+     <y>30</y>
+     <width>158</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <item>
+     <widget class="QPushButton" name="undoBtn">
+      <property name="text">
+       <string>undoBtn</string>
+      </property>
+      <property name="autoRepeat">
+       <bool>true</bool>
+      </property>
+      <property name="autoRepeatDelay">
+       <number>300</number>
+      </property>
+      <property name="autoRepeatInterval">
+       <number>50</number>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="redoBtn">
+      <property name="text">
+       <string>redoBtn</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>
