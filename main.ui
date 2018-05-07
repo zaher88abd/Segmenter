@@ -671,6 +671,32 @@
     <string>File name</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="undoBtn">
+   <property name="geometry">
+    <rect>
+     <x>620</x>
+     <y>20</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>undoBtn</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="redoBtn">
+   <property name="geometry">
+    <rect>
+     <x>710</x>
+     <y>20</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>redoBtn</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>
