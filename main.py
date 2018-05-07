@@ -82,7 +82,7 @@ class Segmeter(QDialog):
         rd_btn = self.sender()
         if rd_btn.isChecked():
             self.filter_number = rd_btn.filter_number
-            self.display_image()
+            self.display_image(change_filter=True)
         pass
 
     def save_image(self):
@@ -228,18 +228,10 @@ class Segmeter(QDialog):
 
     def create_folder(self, dir):
         try:
-            uppath = lambda _path, n: os.sep.join(_path.split(os.sep)[:-n])
-           
-            parent_dir_path = uppath(dir,1)
-            base_dir_name = os.path.basename(os.path.normpath(dir+"/"))
-
-            s_dir = os.path.join(parent_dir_path, "segmenter")
+            s_dir = Path(dir)
+            s_dir = Path(s_dir.parents[0], "segmenter", s_dir.parts[len(s_dir.parts) - 1])
+            print(s_dir)
             if not os.path.exists(s_dir):
-                os.makedirs(s_dir)
-
-            s_dir = os.path.join(parent_dir_path, "segmenter",base_dir_name)
-            
-            if not Path(s_dir).exists():
                 os.makedirs(s_dir)
             self.saved_dir = s_dir
         except Exception as e:
@@ -270,7 +262,7 @@ class Segmeter(QDialog):
         try:
             self.save_current_segment()
             self.currentInd -= 1
-            if self.currentInd == 0:
+            if self.currentInd == -1:
                 self.currentInd = len(self.files) - 1
                 # self.initUI()
             self.load_image(current_image=True)
@@ -298,9 +290,14 @@ class Segmeter(QDialog):
         widget.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
 
     # read image from attr and show them at UI
-    def display_image(self):
+    def display_image(self, change_filter=False):
         try:
-            
+
+            if self.f_image is None:
+                self.f_image = filter_image(self.image, self.filter_number)
+
+            if change_filter:
+                self.f_image = filter_image(self.image, self.filter_number)
 
             height, width = self.image.shape[:2]
             max_height = 384
@@ -319,15 +316,11 @@ class Segmeter(QDialog):
             # Show original Photo
             self.show_image(self.orgImg, self.image)
 
-
-
             # Show filtered photo
-            if self.f_image==None:
-                self.f_image = filter_image(self.image, self.filter_number)
-                if self.f_image.ndim == 2:
-                    if not self.f_image.dtype == 'uint8':
-                        self.f_image = np.uint8(self.f_image)
-                    self.f_image = covertGrayRGB(self.f_image)
+            if self.f_image.ndim == 2:
+                if not self.f_image.dtype == 'uint8':
+                    self.f_image = np.uint8(self.f_image)
+                self.f_image = covertGrayRGB(self.f_image)
             self.show_image(self.f_view, self.f_image)
 
             h, w = self.f_image.shape[:2]
