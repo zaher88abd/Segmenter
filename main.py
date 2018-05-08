@@ -56,10 +56,6 @@ class Segmeter(QDialog):
             self.cleanBtn.clicked.connect(self.clean_image)
             self.cleanBtn_2.clicked.connect(self.clean_image_2)
 
-            # self.radBtnEG.clicked.connect(lambda: self.rd_btn_check(self.radBtnEG))
-            # self.radBtnNDI.clicked.connect(lambda: self.rd_btn_check(self.radBtnNDI))
-            # self.radBtnNon.clicked.connect(lambda: self.rd_btn_check(self.radBtnNon))
-
             self.radBtnNon.filter_number = 0
             self.radBtnNon.toggled.connect(self.rd_btn_check)
             self.radBtnEG.filter_number = 1
@@ -78,7 +74,6 @@ class Segmeter(QDialog):
             self.radBtnEdges.toggled.connect(self.rd_btn_check)
             self.radBtnLaplacian.filter_number = 8
             self.radBtnLaplacian.toggled.connect(self.rd_btn_check)
-
         except Exception as e:
             print(e)
 
@@ -244,10 +239,14 @@ class Segmeter(QDialog):
 
     def create_folder(self, dir):
         try:
-            s_dir = Path(dir)
-            s_dir = Path(s_dir.parents[0], "segmenter", s_dir.parts[len(s_dir.parts) - 1])
-            print(s_dir)
+            uppath = lambda _path, n: os.sep.join(_path.split(os.sep)[:-n])
+            parent_dir_path = uppath(dir, 1)
+            base_dir_name = os.path.basename(os.path.normpath(dir + "/"))
+            s_dir = os.path.join(parent_dir_path, "segmenter")
             if not os.path.exists(s_dir):
+                os.makedirs(s_dir)
+            s_dir = os.path.join(parent_dir_path, "segmenter", base_dir_name)
+            if not Path(s_dir).exists():
                 os.makedirs(s_dir)
             self.saved_dir = s_dir
         except Exception as e:
@@ -258,7 +257,6 @@ class Segmeter(QDialog):
         if self.saved_dir is None:
             self.saved_dir = QFileDialog.getExistingDirectory(self, "Save an image", "*.jpg", QFileDialog.ShowDirsOnly)
         file_name = os.path.join(self.saved_dir, self.files[self.currentInd])
-        print("Save name", file_name)
         cv2.imwrite(file_name, self.f_image)
 
     # Show the next image in the list and save the current one if there
@@ -303,9 +301,20 @@ class Segmeter(QDialog):
     # put image at widget
     @staticmethod
     def show_image(widget, img):
+        print("sd", type(img))
         widget.setPixmap(QPixmap.fromImage(
             QImage(img, img.shape[1], img.shape[0]
                    , img.strides[0], get_image_format(img)).rgbSwapped()))
+        widget.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+
+    # put image at widget
+    @staticmethod
+    def show_image_(widget, img):
+        print(type(img))
+        print(np.dtype(img))
+        omg = QImage(img, img.shape[1], img.shape[0]
+                     , img.strides[0], QImage.Format_RGB32).rgbSwapped()
+        widget.setPixmap(QPixmap.fromImage(omg))
         widget.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
 
     # read image from attr and show them at UI
@@ -355,11 +364,20 @@ class Segmeter(QDialog):
         self.update_f_image()
 
     def clean_image_2(self):
-        ss=np.where((self.f_image == [255, 255, 255]).all(axis=2))
+        ss = np.where((self.f_image == [255, 255, 255]).all(axis=2))
         self.f_image[ss] = [0, 0, 0]  # clear White color
-        ssd=np.where((self.f_image == [255, 0, 0]).all(axis=2))
+        ssd = np.where((self.f_image == [255, 0, 0]).all(axis=2))
         self.f_image[ssd] = [0, 0, 0]  # clear Blue color
         self.update_f_image()
+
+    def zoom_original(self):
+        # try:
+        print("original", self.image.shape)
+        zoomed_img = Zoom(self.image, 2)
+        print("zoomed", zoomed_img.shape)
+        self.show_image_(self.zoomImg, zoomed_img)
+        # except Exception as e:
+        #     print(e)
 
     # Add Filter on the events
     def eventFilter(self, source, event):
@@ -401,6 +419,7 @@ class Segmeter(QDialog):
                         y = int(point.y())
                         self.seed_pt = x, y
                         self.points_original(True)
+                        self.zoom_original()
                     except Exception as e:
                         print(e)
                 elif event.buttons() == QtCore.Qt.RightButton and self.selected_tool == 3:

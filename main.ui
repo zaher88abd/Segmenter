@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1508</width>
-    <height>591</height>
+    <width>1499</width>
+    <height>584</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
   <widget class="QPushButton" name="prvBtn">
    <property name="geometry">
     <rect>
-     <x>1044</x>
+     <x>1234</x>
      <y>20</y>
      <width>81</width>
      <height>41</height>
@@ -38,7 +38,7 @@
   <widget class="QLabel" name="orgImg">
    <property name="geometry">
     <rect>
-     <x>11</x>
+     <x>10</x>
      <y>70</y>
      <width>640</width>
      <height>512</height>
@@ -57,7 +57,7 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>11</x>
+     <x>10</x>
      <y>45</y>
      <width>131</width>
      <height>21</height>
@@ -70,7 +70,7 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>660</x>
+     <x>850</x>
      <y>40</y>
      <width>101</width>
      <height>31</height>
@@ -83,10 +83,10 @@
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>1310</x>
-     <y>10</y>
-     <width>171</width>
-     <height>281</height>
+     <x>660</x>
+     <y>220</y>
+     <width>191</width>
+     <height>161</height>
     </rect>
    </property>
    <property name="toolTip">
@@ -98,14 +98,66 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>30</y>
-      <width>131</width>
-      <height>251</height>
+      <x>0</x>
+      <y>20</y>
+      <width>181</width>
+      <height>136</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
+    <layout class="QGridLayout" name="gridLayout_3">
+     <item row="2" column="2">
+      <widget class="QRadioButton" name="radBtnEdges">
+       <property name="toolTip">
+        <string>Ctrl+Shift+F, 2</string>
+       </property>
+       <property name="text">
+        <string>Edges</string>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+Shift+F, 2</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QRadioButton" name="radBtnExred">
+       <property name="toolTip">
+        <string>Ctrl+Shift+F, 2</string>
+       </property>
+       <property name="text">
+        <string>Exred</string>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+Shift+F, 2</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0" colspan="3">
+      <widget class="QRadioButton" name="radBtnNon">
+       <property name="toolTip">
+        <string>Ctrl+Shift+F, 3</string>
+       </property>
+       <property name="text">
+        <string>None</string>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+Shift+F, 3</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QRadioButton" name="radBtnHsv">
+       <property name="toolTip">
+        <string>Ctrl+Shift+F, 2</string>
+       </property>
+       <property name="text">
+        <string>Hsv</string>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+Shift+F, 2</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
       <widget class="QRadioButton" name="radBtnEG">
        <property name="toolTip">
         <string>Ctrl+Shift+F, 1</string>
@@ -121,20 +173,7 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QRadioButton" name="radBtnNDI">
-       <property name="toolTip">
-        <string>Ctrl+Shift+F, 2</string>
-       </property>
-       <property name="text">
-        <string>NDI</string>
-       </property>
-       <property name="shortcut">
-        <string>Ctrl+Shift+F, 2</string>
-       </property>
-      </widget>
-     </item>
-     <item>
+     <item row="1" column="0">
       <widget class="QRadioButton" name="radBtnCive">
        <property name="toolTip">
         <string>Ctrl+Shift+F, 2</string>
@@ -147,20 +186,7 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QRadioButton" name="radBtnExred">
-       <property name="toolTip">
-        <string>Ctrl+Shift+F, 2</string>
-       </property>
-       <property name="text">
-        <string>Exred</string>
-       </property>
-       <property name="shortcut">
-        <string>Ctrl+Shift+F, 2</string>
-       </property>
-      </widget>
-     </item>
-     <item>
+     <item row="3" column="2">
       <widget class="QRadioButton" name="radBtnNdi">
        <property name="enabled">
         <bool>true</bool>
@@ -176,33 +202,7 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QRadioButton" name="radBtnHsv">
-       <property name="toolTip">
-        <string>Ctrl+Shift+F, 2</string>
-       </property>
-       <property name="text">
-        <string>Hsv</string>
-       </property>
-       <property name="shortcut">
-        <string>Ctrl+Shift+F, 2</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="radBtnEdges">
-       <property name="toolTip">
-        <string>Ctrl+Shift+F, 2</string>
-       </property>
-       <property name="text">
-        <string>Edges</string>
-       </property>
-       <property name="shortcut">
-        <string>Ctrl+Shift+F, 2</string>
-       </property>
-      </widget>
-     </item>
-     <item>
+     <item row="3" column="0" colspan="2">
       <widget class="QRadioButton" name="radBtnLaplacian">
        <property name="toolTip">
         <string>Ctrl+Shift+F, 2</string>
@@ -215,16 +215,16 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QRadioButton" name="radBtnNon">
+     <item row="0" column="2">
+      <widget class="QRadioButton" name="radBtnNDI">
        <property name="toolTip">
-        <string>Ctrl+Shift+F, 3</string>
+        <string>Ctrl+Shift+F, 2</string>
        </property>
        <property name="text">
-        <string>None</string>
+        <string>NDI</string>
        </property>
        <property name="shortcut">
-        <string>Ctrl+Shift+F, 3</string>
+        <string>Ctrl+Shift+F, 2</string>
        </property>
       </widget>
      </item>
@@ -234,7 +234,7 @@
   <widget class="QPushButton" name="nextBtn">
    <property name="geometry">
     <rect>
-     <x>1130</x>
+     <x>1320</x>
      <y>20</y>
      <width>91</width>
      <height>41</height>
@@ -253,7 +253,7 @@
   <widget class="QLabel" name="f_view">
    <property name="geometry">
     <rect>
-     <x>660</x>
+     <x>850</x>
      <y>70</y>
      <width>640</width>
      <height>512</height>
@@ -272,197 +272,13 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>1310</x>
-     <y>450</y>
-     <width>124</width>
-     <height>128</height>
-    </rect>
-   </property>
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QPushButton" name="yellowkBtn">
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Ctrl+Shift+1</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="shortcut">
-       <string>Ctrl+Shift+1</string>
-      </property>
-      <property name="autoDefault">
-       <bool>true</bool>
-      </property>
-      <property name="default">
-       <bool>true</bool>
-      </property>
-      <property name="flat">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QPushButton" name="greenBtn">
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Ctrl+Shift+2</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="shortcut">
-       <string>Ctrl+Shift+2</string>
-      </property>
-      <property name="autoDefault">
-       <bool>true</bool>
-      </property>
-      <property name="default">
-       <bool>true</bool>
-      </property>
-      <property name="flat">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QPushButton" name="blackBtn">
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Ctrl+Shift+4</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="shortcut">
-       <string>Ctrl+Shift+4</string>
-      </property>
-      <property name="autoDefault">
-       <bool>true</bool>
-      </property>
-      <property name="default">
-       <bool>true</bool>
-      </property>
-      <property name="flat">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0">
-     <widget class="QPushButton" name="redBtn">
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Ctrl+Shift+5</string>
-      </property>
-      <property name="statusTip">
-       <string/>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="shortcut">
-       <string>Ctrl+Shift+5</string>
-      </property>
-      <property name="autoDefault">
-       <bool>true</bool>
-      </property>
-      <property name="default">
-       <bool>true</bool>
-      </property>
-      <property name="flat">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QPushButton" name="blueBtn">
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Ctrl+Shift+6</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="shortcut">
-       <string>Ctrl+Shift+6</string>
-      </property>
-      <property name="autoDefault">
-       <bool>true</bool>
-      </property>
-      <property name="default">
-       <bool>true</bool>
-      </property>
-      <property name="flat">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QPushButton" name="whiteBtn">
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="toolTip">
-       <string>Ctrl+Shift+3</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="shortcut">
-       <string>Ctrl+Shift+3</string>
-      </property>
-      <property name="autoDefault">
-       <bool>true</bool>
-      </property>
-      <property name="default">
-       <bool>true</bool>
-      </property>
-      <property name="flat">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>1310</x>
-     <y>290</y>
-     <width>92</width>
+     <x>660</x>
+     <y>380</y>
+     <width>108</width>
      <height>101</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
-    <item row="0" column="0" colspan="2">
-     <widget class="QPushButton" name="color_selected">
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="autoDefault">
-       <bool>true</bool>
-      </property>
-      <property name="default">
-       <bool>true</bool>
-      </property>
-      <property name="flat">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
     <item row="1" column="0">
      <widget class="QPushButton" name="fillBtn">
       <property name="acceptDrops">
@@ -576,12 +392,31 @@
       </property>
      </widget>
     </item>
+    <item row="0" column="0" colspan="2">
+     <widget class="QPushButton" name="color_selected">
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QLabel" name="filename">
    <property name="geometry">
     <rect>
-     <x>110</x>
+     <x>109</x>
      <y>10</y>
      <width>121</width>
      <height>31</height>
@@ -599,7 +434,7 @@
   <widget class="QLabel" name="filename_2">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>9</x>
      <y>10</y>
      <width>91</width>
      <height>31</height>
@@ -617,9 +452,9 @@
   <widget class="QSlider" name="horizontalSlider">
    <property name="geometry">
     <rect>
-     <x>1310</x>
-     <y>400</y>
-     <width>160</width>
+     <x>660</x>
+     <y>490</y>
+     <width>181</width>
      <height>22</height>
     </rect>
    </property>
@@ -642,8 +477,8 @@
   <widget class="QPushButton" name="cleanBtn_2">
    <property name="geometry">
     <rect>
-     <x>1410</x>
-     <y>300</y>
+     <x>780</x>
+     <y>450</y>
      <width>42</width>
      <height>24</height>
     </rect>
@@ -656,10 +491,10 @@
      <normaloff>icons/Clear-icon.png</normaloff>icons/Clear-icon.png</iconset>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>368</x>
+     <x>367</x>
      <y>20</y>
      <width>281</width>
      <height>41</height>
@@ -707,13 +542,13 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>730</x>
-     <y>30</y>
-     <width>158</width>
-     <height>25</height>
+     <x>1030</x>
+     <y>10</y>
+     <width>178</width>
+     <height>51</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -737,6 +572,203 @@
      <widget class="QPushButton" name="redoBtn">
       <property name="text">
        <string>redoBtn</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QLabel" name="zoomImg">
+   <property name="geometry">
+    <rect>
+     <x>710</x>
+     <y>70</y>
+     <width>640</width>
+     <height>512</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="textFormat">
+    <enum>Qt::AutoText</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>660</x>
+     <y>30</y>
+     <width>101</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Zoom</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>660</x>
+     <y>520</y>
+     <width>188</width>
+     <height>62</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QPushButton" name="yellowkBtn">
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>Ctrl+Shift+1</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+Shift+1</string>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QPushButton" name="greenBtn">
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>Ctrl+Shift+2</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+Shift+2</string>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QPushButton" name="whiteBtn">
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>Ctrl+Shift+3</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+Shift+3</string>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QPushButton" name="blackBtn">
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>Ctrl+Shift+4</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+Shift+4</string>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QPushButton" name="redBtn">
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>Ctrl+Shift+5</string>
+      </property>
+      <property name="statusTip">
+       <string/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+Shift+5</string>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QPushButton" name="blueBtn">
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="toolTip">
+       <string>Ctrl+Shift+6</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+Shift+6</string>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
       </property>
      </widget>
     </item>
