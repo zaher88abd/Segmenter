@@ -244,10 +244,14 @@ class Segmeter(QDialog):
 
     def create_folder(self, dir):
         try:
-            s_dir = Path(dir)
-            s_dir = Path(s_dir.parents[0], "segmenter", s_dir.parts[len(s_dir.parts) - 1])
-            print(s_dir)
+            uppath = lambda _path, n: os.sep.join(_path.split(os.sep)[:-n])
+            parent_dir_path = uppath(dir, 1)
+            base_dir_name = os.path.basename(os.path.normpath(dir + "/"))
+            s_dir = os.path.join(parent_dir_path, "segmenter")
             if not os.path.exists(s_dir):
+                os.makedirs(s_dir)
+            s_dir = os.path.join(parent_dir_path, "segmenter", base_dir_name)
+            if not Path(s_dir).exists():
                 os.makedirs(s_dir)
             self.saved_dir = s_dir
         except Exception as e:
@@ -355,9 +359,9 @@ class Segmeter(QDialog):
         self.update_f_image()
 
     def clean_image_2(self):
-        ss=np.where((self.f_image == [255, 255, 255]).all(axis=2))
+        ss = np.where((self.f_image == [255, 255, 255]).all(axis=2))
         self.f_image[ss] = [0, 0, 0]  # clear White color
-        ssd=np.where((self.f_image == [255, 0, 0]).all(axis=2))
+        ssd = np.where((self.f_image == [255, 0, 0]).all(axis=2))
         self.f_image[ssd] = [0, 0, 0]  # clear Blue color
         self.update_f_image()
 
