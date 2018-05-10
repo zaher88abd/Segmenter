@@ -24,6 +24,7 @@ class Segmeter(QDialog):
         self.saved_dir = None
         self.base_color = (255, 255, 255)
         self.selected_tool = 0  # nothing
+        self.image=None
         try:
             super().__init__()
             loadUi('main.ui', self)
@@ -378,57 +379,34 @@ class Segmeter(QDialog):
 
     # Add Filter on the events
     def eventFilter(self, source, event):
-        if source == self.f_view:
-            if event.type() == QEvent.MouseMove:
-                if event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 2:
-                    try:
-                        point = QtCore.QPoint(event.pos())
-                        x = int(point.x())
-                        y = int(point.y())
-                        self.seed_pt = x, y
-                        self.points_(True)
-                    except Exception as e:
-                        print(e)
-                elif event.buttons() == QtCore.Qt.RightButton and self.selected_tool == 2:
-                    try:
-                        point = QtCore.QPoint(event.pos())
-                        x = int(point.x())
-                        y = int(point.y())
-                        self.seed_pt = x, y
-                        self.points_(False)
-                    except Exception as e:
-                        print(e)
-            elif event.type() == QEvent.MouseButtonPress and event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 1:
-                try:
+        try:
+            if source == self.f_view:
+                if event.type() == QEvent.MouseMove:
                     point = QtCore.QPoint(event.pos())
                     x = int(point.x())
                     y = int(point.y())
                     self.seed_pt = x, y
+                    if event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 2:
+                        self.points_(True)
+                    elif event.buttons() == QtCore.Qt.RightButton and self.selected_tool == 2:
+                        self.points_(False)
+                elif event.type() == QEvent.MouseButtonPress and event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 1:
                     self.floodfill_()
-                except Exception as e:
-                    print(e)
-        elif source == self.orgImg:
-            if event.type() == QEvent.MouseMove:
-                if event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 3:
-                    try:
-                        point = QtCore.QPoint(event.pos())
-                        x = int(point.x())
-                        y = int(point.y())
-                        self.seed_pt = x, y
-                        self.points_original(True)
+            elif source == self.orgImg:
+                if event.type() == QEvent.MouseMove:
+                    point = QtCore.QPoint(event.pos())
+                    x = int(point.x())
+                    y = int(point.y())
+                    self.seed_pt = x, y
+                    if not self.image is None:
                         self.zoom_original(x, y)
-                    except Exception as e:
-                        print(e)
-                elif event.buttons() == QtCore.Qt.RightButton and self.selected_tool == 3:
-                    try:
-                        point = QtCore.QPoint(event.pos())
-                        x = int(point.x())
-                        y = int(point.y())
-                        self.seed_pt = x, y
+                    if event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 3:
+                        self.points_original(True)
+                    elif event.buttons() == QtCore.Qt.RightButton and self.selected_tool == 3:
                         self.points_original(False)
-                    except Exception as e:
-                        print(e)
-        return False
+            return False
+        except Exception as e:
+            print(e)
 
 
 if __name__ == "__main__":
