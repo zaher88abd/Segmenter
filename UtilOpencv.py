@@ -35,3 +35,13 @@ def Zoom(cv2Object, zoomSize):
     return cv2Object
     # except Exception as e:
     #     print(e)
+
+
+def crop(img, x, y):
+    x_0 = x - 90
+    x_1 = x + 90
+
+    y_0 = y - 70
+    y_1 = y + 70
+    crop_img = img[y_0:y_1, x_0:x_1]
+    return crop_img

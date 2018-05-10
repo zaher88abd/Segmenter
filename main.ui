@@ -85,7 +85,7 @@
     <rect>
      <x>660</x>
      <y>220</y>
-     <width>191</width>
+     <width>181</width>
      <height>161</height>
     </rect>
    </property>
@@ -98,33 +98,36 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>10</x>
       <y>20</y>
-      <width>181</width>
+      <width>162</width>
       <height>136</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_3">
-     <item row="2" column="2">
-      <widget class="QRadioButton" name="radBtnEdges">
+     <item row="3" column="2">
+      <widget class="QRadioButton" name="radBtnNdi">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="toolTip">
         <string>Ctrl+Shift+F, 2</string>
        </property>
        <property name="text">
-        <string>Edges</string>
+        <string>Green</string>
        </property>
        <property name="shortcut">
         <string>Ctrl+Shift+F, 2</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="2">
-      <widget class="QRadioButton" name="radBtnExred">
+     <item row="1" column="0">
+      <widget class="QRadioButton" name="radBtnCive">
        <property name="toolTip">
         <string>Ctrl+Shift+F, 2</string>
        </property>
        <property name="text">
-        <string>Exred</string>
+        <string>Cive</string>
        </property>
        <property name="shortcut">
         <string>Ctrl+Shift+F, 2</string>
@@ -141,6 +144,32 @@
        </property>
        <property name="shortcut">
         <string>Ctrl+Shift+F, 3</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QRadioButton" name="radBtnExred">
+       <property name="toolTip">
+        <string>Ctrl+Shift+F, 2</string>
+       </property>
+       <property name="text">
+        <string>Exred</string>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+Shift+F, 2</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QRadioButton" name="radBtnEdges">
+       <property name="toolTip">
+        <string>Ctrl+Shift+F, 2</string>
+       </property>
+       <property name="text">
+        <string>Edges</string>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+Shift+F, 2</string>
        </property>
       </widget>
      </item>
@@ -173,35 +202,6 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QRadioButton" name="radBtnCive">
-       <property name="toolTip">
-        <string>Ctrl+Shift+F, 2</string>
-       </property>
-       <property name="text">
-        <string>Cive</string>
-       </property>
-       <property name="shortcut">
-        <string>Ctrl+Shift+F, 2</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="2">
-      <widget class="QRadioButton" name="radBtnNdi">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="toolTip">
-        <string>Ctrl+Shift+F, 2</string>
-       </property>
-       <property name="text">
-        <string>Green</string>
-       </property>
-       <property name="shortcut">
-        <string>Ctrl+Shift+F, 2</string>
-       </property>
-      </widget>
-     </item>
      <item row="3" column="0" colspan="2">
       <widget class="QRadioButton" name="radBtnLaplacian">
        <property name="toolTip">
@@ -230,6 +230,8 @@
      </item>
     </layout>
    </widget>
+   <zorder>layoutWidget</zorder>
+   <zorder>label_4</zorder>
   </widget>
   <widget class="QPushButton" name="nextBtn">
    <property name="geometry">
@@ -580,10 +582,10 @@
   <widget class="QLabel" name="zoomImg">
    <property name="geometry">
     <rect>
-     <x>710</x>
+     <x>660</x>
      <y>70</y>
-     <width>640</width>
-     <height>512</height>
+     <width>181</width>
+     <height>141</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -600,7 +602,7 @@
    <property name="geometry">
     <rect>
      <x>660</x>
-     <y>30</y>
+     <y>40</y>
      <width>101</width>
      <height>31</height>
     </rect>
@@ -614,7 +616,7 @@
     <rect>
      <x>660</x>
      <y>520</y>
-     <width>188</width>
+     <width>181</width>
      <height>62</height>
     </rect>
    </property>

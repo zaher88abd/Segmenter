@@ -301,7 +301,6 @@ class Segmeter(QDialog):
     # put image at widget
     @staticmethod
     def show_image(widget, img):
-        print("sd", type(img))
         widget.setPixmap(QPixmap.fromImage(
             QImage(img, img.shape[1], img.shape[0]
                    , img.strides[0], get_image_format(img)).rgbSwapped()))
@@ -310,11 +309,10 @@ class Segmeter(QDialog):
     # put image at widget
     @staticmethod
     def show_image_(widget, img):
-        print(type(img))
-        print(np.dtype(img))
-        omg = QImage(img, img.shape[1], img.shape[0]
-                     , img.strides[0], QImage.Format_RGB32).rgbSwapped()
-        widget.setPixmap(QPixmap.fromImage(omg))
+        img = np.array(img).astype(np.uint8)
+        widget.setPixmap(QPixmap.fromImage(
+            QImage(img, img.shape[1], img.shape[0]
+                   , img.strides[0], get_image_format(img)).rgbSwapped()))
         widget.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
 
     # read image from attr and show them at UI
@@ -370,11 +368,10 @@ class Segmeter(QDialog):
         self.f_image[ssd] = [0, 0, 0]  # clear Blue color
         self.update_f_image()
 
-    def zoom_original(self):
+    def zoom_original(self, x, y):
         # try:
-        print("original", self.image.shape)
-        zoomed_img = Zoom(self.image, 2)
-        print("zoomed", zoomed_img.shape)
+        zoomed_img = crop(self.image, x, y)
+        zoomed_img = Zoom(zoomed_img, 2)
         self.show_image_(self.zoomImg, zoomed_img)
         # except Exception as e:
         #     print(e)
@@ -419,7 +416,7 @@ class Segmeter(QDialog):
                         y = int(point.y())
                         self.seed_pt = x, y
                         self.points_original(True)
-                        self.zoom_original()
+                        self.zoom_original(x, y)
                     except Exception as e:
                         print(e)
                 elif event.buttons() == QtCore.Qt.RightButton and self.selected_tool == 3:
