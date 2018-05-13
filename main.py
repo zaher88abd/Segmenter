@@ -363,7 +363,10 @@ class Segmeter(QDialog):
         self.update_f_image()
 
     def clean_image_2(self):
-        ss = np.where((self.f_image == [255, 255, 255]).all(axis=2))
+        lower_white = np.array([250, 250, 250], dtype="uint8")
+        upper_white = np.array([255, 255, 255], dtype="uint8")
+        mask = cv2.inRange(self.f_image, lower_white, upper_white)
+        ss = np.where(np.isin(mask, 255))
         self.f_image[ss] = [0, 0, 0]  # clear White color
         ssd = np.where((self.f_image == [255, 0, 0]).all(axis=2))
         self.f_image[ssd] = [0, 0, 0]  # clear Blue color

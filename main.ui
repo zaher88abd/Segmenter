@@ -560,6 +560,9 @@
       <property name="text">
        <string>undoBtn</string>
       </property>
+      <property name="shortcut">
+       <string>Ctrl+Z</string>
+      </property>
       <property name="autoRepeat">
        <bool>true</bool>
       </property>
