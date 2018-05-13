@@ -24,7 +24,7 @@ class Segmeter(QDialog):
         self.saved_dir = None
         self.base_color = (255, 255, 255)
         self.selected_tool = 0  # nothing
-        self.image=None
+        self.image = None
         try:
             super().__init__()
             loadUi('main.ui', self)
