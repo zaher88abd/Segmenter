@@ -4,6 +4,7 @@ import numpy as np
 import cv2
 
 BLUE = np.array([255, 0, 0])
+WHITE = np.array([255, 255, 255])
 
 
 def filter_image(original_img, filter_num):
@@ -48,7 +49,7 @@ def filter_image(original_img, filter_num):
         mask = cv2.inRange(hsv, lower_black, upper_black)
 
         img = np.zeros((mask.shape[0], mask.shape[1], 3))
-        img[np.where(mask == 255)] = BLUE
+        img[np.where(mask == 255)] = WHITE
         img = img.astype(np.uint8)
         return img
 
