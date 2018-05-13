@@ -43,19 +43,21 @@ def filter_image(original_img, filter_num):
     if filter_num == 5:
         hsv = cv2.cvtColor(rgb_img, cv2.COLOR_BGR2HSV)
 
-        lower_black = np.array([50, 50, 50], dtype="uint8")
-        upper_black = np.array([100, 255, 100], dtype="uint8")
+        lower_black = np.array([36, 0, 0], dtype="uint8")
+        upper_black = np.array([70, 255, 255], dtype="uint8")
         mask = cv2.inRange(hsv, lower_black, upper_black)
 
         img = np.zeros((mask.shape[0], mask.shape[1], 3))
         img[np.where(mask == 255)] = BLUE
-        print("green",np.shape(img))
+        print("green", np.shape(img))
+        print("green", img.dtype)
+        img=img.astype(np.uint8)
         return img
 
         # Hsv
     if filter_num == 6:
         ss = pf.hsv(rgb_img)
-        print("hsv",np.shape(ss))
+        print("hsv", np.shape(ss))
         return ss
 
     # edges
