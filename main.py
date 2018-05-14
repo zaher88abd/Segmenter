@@ -389,9 +389,9 @@ class Segmeter(QDialog):
         #     print(e)
 
     def clean_images(self):
-        if len(self.actionList) >= 1500:
+        if len(self.actionList) >= 1000:
             print("clean list")
-            self.actionList = self.actionList[:1500]
+            self.actionList = self.actionList[:1000]
 
     # Add Filter on the events
     def eventFilter(self, source, event):
@@ -409,7 +409,7 @@ class Segmeter(QDialog):
                         self.points_(False)
                         self.clean_images()
                 elif event.type() == QEvent.MouseButtonPress and event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 1:
-                    self.actionList = self.actionList[:100]
+                    self.actionList = self.actionList[:500]
                     self.floodfill_()
                     self.actionList.append(self.f_image)
             elif source == self.orgImg:
