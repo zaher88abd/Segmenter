@@ -1,6 +1,7 @@
 import glob
 import os
 import sys
+from datetime import time
 from pathlib import Path
 
 from PyQt5.QtCore import *
@@ -92,7 +93,7 @@ class Segmeter(QDialog):
         cv2.imwrite(file_name[0], self.f_image)
 
     def undo(self):
-        print("undoing")
+        print("undoing", len(self.actionList))
         try:
             self.f_image = self.actionList.pop()
             self.update_f_image()
@@ -387,6 +388,11 @@ class Segmeter(QDialog):
         # except Exception as e:
         #     print(e)
 
+    def clean_images(self):
+        if len(self.actionList) >= 1500:
+            print("clean list")
+            self.actionList = self.actionList[:1500]
+
     # Add Filter on the events
     def eventFilter(self, source, event):
         try:
@@ -398,10 +404,14 @@ class Segmeter(QDialog):
                     self.seed_pt = x, y
                     if event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 2:
                         self.points_(True)
+                        self.clean_images()
                     elif event.buttons() == QtCore.Qt.RightButton and self.selected_tool == 2:
                         self.points_(False)
+                        self.clean_images()
                 elif event.type() == QEvent.MouseButtonPress and event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 1:
+                    self.actionList = self.actionList[:100]
                     self.floodfill_()
+                    self.actionList.append(self.f_image)
             elif source == self.orgImg:
                 if event.type() == QEvent.MouseMove:
                     point = QtCore.QPoint(event.pos())
@@ -412,8 +422,10 @@ class Segmeter(QDialog):
                         self.zoom_original(x, y)
                     if event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 3:
                         self.points_original(True)
+                        self.clean_images()
                     elif event.buttons() == QtCore.Qt.RightButton and self.selected_tool == 3:
                         self.points_original(False)
+                        self.clean_images()
             return False
         except Exception as e:
             print(e)
