@@ -16,9 +16,9 @@
 - Pincel        Ctrl+C
 
 4. Color
-- Yellow       Ctrl+Shift+1
-- Green        Ctrl+Shift+2
-- Whit          Ctrl+Shift+3
-- Black         Ctrl+Shift+4
-- Red           Ctrl+Shift+5
-- Blue          Ctrl+Shift+6
+- Yellow       1
+- Green        2
+- Whit         3
+- Black        4
+- Red          5
+- Blue         6
