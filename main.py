@@ -26,6 +26,10 @@ class Segmeter(QDialog):
         self.base_color = (255, 255, 255)
         self.selected_tool = 0  # nothing
         self.image = None
+        self.custom_hsv_filters = []
+        self.f_image = None
+        self.file_name = None
+
         try:
             super().__init__()
             loadUi('main.ui', self)
@@ -76,8 +80,129 @@ class Segmeter(QDialog):
             self.radBtnEdges.toggled.connect(self.rd_btn_check)
             self.radBtnLaplacian.filter_number = 8
             self.radBtnLaplacian.toggled.connect(self.rd_btn_check)
+            self.radBtnCustom.filter_number = 9
+            self.radBtnCustom.toggled.connect(self.rd_btn_check)
+
+            self.radBtnNon.setChecked(True)
+
+            self.hue_min_slider.valueChanged.connect(self.value_change)
+            self.hue_max_slider.valueChanged.connect(self.value_change)
+            self.saturation_min_slider.valueChanged.connect(self.value_change)
+            self.saturation_max_slider.valueChanged.connect(self.value_change)
+            self.value_min_slider.valueChanged.connect(self.value_change)
+            self.value_max_slider.valueChanged.connect(self.value_change)
+
+            self.add_custom_btn.clicked.connect(self.add_custom_thresh)
+            self.remove_custom_btn.clicked.connect(self.remove_custom_thresh)
+
+            self.dilation_btn.clicked.connect(self.dilation_clicked)
+            self.erosion_btn.clicked.connect(self.erosion_clicked)
+            self.opening_btn.clicked.connect(self.opening_clicked)
+
+            self.kernel_ln_edit.setValidator(QIntValidator())
+            self.kernel_ln_edit.setMaxLength(2)
+            self.kernel_ln_edit.setAlignment(Qt.AlignRight)
+            self.kernel_ln_edit.setFont(QFont("Arial", 20))
+
+            self.exgr_slider.valueChanged.connect(self.value_change)
+
+            self.deleteBtn.clicked.connect(self.delete_img)
+            # self.exgr_ln_edit.setValidator(QIntValidator())
+            # self.exgr_ln_edit.setMaxLength(3)
+            # self.exgr_ln_edit.setAlignment(Qt.AlignRight)
+            # self.exgr_ln_edit.setFont(QFont("Arial", 20))
+            self.deleteBtn.setEnabled(False)
         except Exception as e:
             print(e)
+
+    def delete_img(self):
+        pass
+        # if os.path.isfile(self.file_name):
+        #     os.remove(self.file_name)
+        # self.filename_lbl.setText("")
+
+        # self.currentInd += 1
+        # if self.currentInd == len(self.files):
+        #     self.currentInd = 0
+        #     # self.initUI()
+        # self.load_image(current_image=True)
+        # self.actionList = []
+        #
+        #
+        # self.currentInd = 0
+        # self.files = []
+        # self.filter_number = 1
+        # self.actionList = []
+        # self.saved_dir = None
+        # self.base_color = (255, 255, 255)
+        # self.selected_tool = 0  # nothing
+        # self.image = None
+        # self.custom_hsv_filters = []
+        # self.f_image = None
+        # self.file_name = None
+
+    def erosion_clicked(self):
+        if self.f_image is not None:
+            kernel = np.ones((int(self.kernel_ln_edit.text()), int(self.kernel_ln_edit.text())), np.uint8)
+            self.f_image = cv2.erode(self.f_image, kernel, iterations=1)
+            self.display_image()
+
+    def dilation_clicked(self):
+        if self.f_image is not None:
+            kernel = np.ones((int(self.kernel_ln_edit.text()), int(self.kernel_ln_edit.text())), np.uint8)
+            self.f_image = cv2.dilate(self.f_image, kernel, iterations=1)
+            self.display_image()
+
+    def opening_clicked(self):
+        if self.f_image is not None:
+            kernel = np.ones((int(self.kernel_ln_edit.text()), int(self.kernel_ln_edit.text())), np.uint8)
+            self.f_image = cv2.morphologyEx(self.f_image, cv2.MORPH_OPEN, kernel)
+            self.display_image()
+
+    def remove_custom_thresh(self):
+        if self.custom_list.currentRow() >= 0:
+            self.custom_hsv_filters.pop(self.custom_list.currentRow())
+            item = self.custom_list.takeItem(self.custom_list.currentRow())
+            item = None
+        self.radBtnNon.filter_number = 0
+        self.radBtnNon.setChecked(True)
+        self.display_image(change_filter=True)
+
+    def add_custom_thresh(self):
+        self.custom_hsv_filters.append(((self.hue_min_slider.value(), self.hue_max_slider.value()),
+                                        (self.saturation_min_slider.value(), self.saturation_max_slider.value()),
+                                        (self.value_min_slider.value(), self.value_max_slider.value())))
+        self.custom_list.addItem(((self.hue_min_slider.value(), self.hue_max_slider.value()),
+                                        (self.saturation_min_slider.value(), self.saturation_max_slider.value()),
+                                        (self.value_min_slider.value(), self.value_max_slider.value())).__str__())
+        self.radBtnNon.filter_number = 0
+        self.radBtnNon.setChecked(True)
+        self.display_image(change_filter=True)
+
+    def value_change(self):
+        slider = self.sender()
+        if slider == self.hue_min_slider:
+            if self.hue_max_slider.value() <= self.hue_min_slider.value():
+                self.hue_min_slider.setValue(self.hue_max_slider.value()-1)
+        if slider == self.hue_max_slider:
+            if self.hue_max_slider.value() <= self.hue_min_slider.value():
+                self.hue_max_slider.setValue(self.hue_max_slider.value()+1)
+
+        if slider == self.saturation_min_slider:
+            if self.saturation_max_slider.value() <= self.saturation_min_slider.value():
+                self.saturation_min_slider.setValue(self.saturation_max_slider.value()-1)
+        if slider == self.saturation_max_slider:
+            if self.saturation_max_slider.value() <= self.saturation_min_slider.value():
+                self.saturation_max_slider.setValue(self.saturation_max_slider.value()+1)
+
+        if slider == self.value_min_slider:
+            if self.value_max_slider.value() <= self.value_min_slider.value():
+                self.value_min_slider.setValue(self.value_max_slider.value()-1)
+        if slider == self.value_max_slider:
+            if self.value_max_slider.value() <= self.value_min_slider.value():
+                self.value_max_slider.setValue(self.value_max_slider.value()+1)
+
+        self.display_image(change_filter=True)
 
     def rd_btn_check(self):
         rd_btn = self.sender()
@@ -220,6 +345,8 @@ class Segmeter(QDialog):
     def openFile(self):
         file_name = QFileDialog.getOpenFileName(self, "Open file")
         self.file_name = file_name[0]
+        self.files = [self.file_name]
+        self.currentInd = 0
         self.load_image()
 
     @pyqtSlot()
@@ -235,22 +362,27 @@ class Segmeter(QDialog):
             for TYPE in types:
                 self.files.extend(glob.glob(TYPE))
             if self.files != 0:
+                self.currentInd = 0
                 self.load_image(current_image=True)
         except Exception as e:
             print(e)
 
     def create_folder(self, dir):
         try:
-            uppath = lambda _path, n: os.sep.join(_path.split(os.sep)[:-n])
-            parent_dir_path = uppath(dir, 1)
-            base_dir_name = os.path.basename(os.path.normpath(dir + "/"))
-            s_dir = os.path.join(parent_dir_path, "segmenter")
+            s_dir = os.path.join(dir, "segmented_imgs")
             if not os.path.exists(s_dir):
                 os.makedirs(s_dir)
-            s_dir = os.path.join(parent_dir_path, "segmenter", base_dir_name)
-            if not Path(s_dir).exists():
-                os.makedirs(s_dir)
             self.saved_dir = s_dir
+            # uppath = lambda _path, n: os.sep.join(_path.split(os.sep)[:-n])
+            # parent_dir_path = uppath(dir, 1)
+            # base_dir_name = os.path.basename(os.path.normpath(dir + "/"))
+            # s_dir = os.path.join(parent_dir_path, "segmented_imgs")
+            # if not os.path.exists(s_dir):
+            #     os.makedirs(s_dir)
+            # s_dir = os.path.join(parent_dir_path, "segmenter_imgs", base_dir_name)
+            # if not Path(s_dir).exists():
+            #     os.makedirs(s_dir)
+            # self.saved_dir = s_dir
         except Exception as e:
             print(e)
 
@@ -274,7 +406,7 @@ class Segmeter(QDialog):
         except Exception as e:
             print(e)
 
-    # Show the privese image in the list and save the current one if there
+    # Show the previous image in the list and save the current one if there
     def prv_image(self):
         try:
             self.save_current_segment()
@@ -296,7 +428,7 @@ class Segmeter(QDialog):
             self.f_image = cv2.imread(os.path.join(self.saved_dir, self.files[self.currentInd]))
         else:
             self.f_image = None
-        self.filename.setText(self.files[self.currentInd])
+        self.filename_lbl.setText(self.files[self.currentInd])
         self.image = cv2.imread(self.file_name)
         self.display_image()
 
@@ -322,10 +454,10 @@ class Segmeter(QDialog):
         try:
 
             if self.f_image is None:
-                self.f_image = filter_image(self.image, self.filter_number)
+                self.f_image = filter_image(self.image, self.filter_number, self)
 
             if change_filter:
-                self.f_image = filter_image(self.image, self.filter_number)
+                self.f_image = filter_image(self.image, self.filter_number, self)
 
             height, width = self.image.shape[:2]
             max_height = 512
@@ -381,12 +513,17 @@ class Segmeter(QDialog):
         self.update_f_image()
 
     def zoom_original(self, x, y):
-        # try:
-        zoomed_img = crop(self.image, x, y)
-        zoomed_img = Zoom(zoomed_img, 2)
-        self.show_image_(self.zoomImg, zoomed_img)
-        # except Exception as e:
-        #     print(e)
+        try:
+
+            zoomed_img = crop(self.image, x, y)
+            if zoomed_img.size != 0:
+
+                zoomed_img = Zoom(zoomed_img, 2)
+
+                if zoomed_img is not None:
+                    self.show_image_(self.zoomImg, zoomed_img)
+        except Exception as e:
+            print(e)
 
     def clean_images(self):
         if len(self.actionList) >= 1000:
