@@ -60,7 +60,7 @@ class Segmeter(QDialog):
             self.pencilBtn.clicked.connect(self.pencil_tool)
             self.pencilSBtn.clicked.connect(self.pencil_s_tool)
             self.cleanBtn.clicked.connect(self.clean_image)
-            self.cleanBtn_2.clicked.connect(self.clean_image_2)
+            self.locator_tool.clicked.connect(self.clean_image_2)
 
             self.radBtnNon.filter_number = 0
             self.radBtnNon.toggled.connect(self.rd_btn_check)
