@@ -56,7 +56,7 @@ def filter_image(original_img, filter_num, self):
         img = img.astype(np.uint8)
         return img
 
-        # Hsv
+    # Hsv
     if filter_num == 6:
         ss = pf.hsv(rgb_img)
         print("hsv", np.shape(ss))

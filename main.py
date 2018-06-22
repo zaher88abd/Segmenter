@@ -11,7 +11,7 @@ from qtconsole.qt import QtCore, QtGui
 
 from UtilOpencv import *
 from lib.filter import *
-
+import json
 import numpy as np
 
 
@@ -29,6 +29,8 @@ class Segmeter(QDialog):
         self.custom_hsv_filters = []
         self.f_image = None
         self.file_name = None
+        self.stem_points = []
+        self.dir = None
 
         try:
             super().__init__()
@@ -111,35 +113,57 @@ class Segmeter(QDialog):
             # self.exgr_ln_edit.setMaxLength(3)
             # self.exgr_ln_edit.setAlignment(Qt.AlignRight)
             # self.exgr_ln_edit.setFont(QFont("Arial", 20))
-            self.deleteBtn.setEnabled(False)
+
+            #self.deleteBtn.setEnabled(False)
+
+            self.stem_btn.clicked.connect(self.stem_btn_clicked)
+            self.remove_stems_btn.clicked.connect(self.remove_stems_btn_clicked)
         except Exception as e:
             print(e)
 
-    def delete_img(self):
-        pass
-        # if os.path.isfile(self.file_name):
-        #     os.remove(self.file_name)
-        # self.filename_lbl.setText("")
+    def remove_stems_btn_clicked(self):
+        self.stem_points = []
+        self.display_image(change_filter=False)
 
-        # self.currentInd += 1
-        # if self.currentInd == len(self.files):
-        #     self.currentInd = 0
-        #     # self.initUI()
-        # self.load_image(current_image=True)
-        # self.actionList = []
-        #
-        #
-        # self.currentInd = 0
-        # self.files = []
-        # self.filter_number = 1
-        # self.actionList = []
-        # self.saved_dir = None
-        # self.base_color = (255, 255, 255)
-        # self.selected_tool = 0  # nothing
-        # self.image = None
-        # self.custom_hsv_filters = []
-        # self.f_image = None
-        # self.file_name = None
+    def delete_img(self):
+        if len(self.files) > 0 and self.currentInd < len(self.files):
+            path, file_name = os.path.split(self.files[self.currentInd])
+            self.stem_points = []
+            if os.path.isfile(self.files[self.currentInd]):
+                os.remove(self.files[self.currentInd])
+            self.filename_lbl.setText("")
+            json_file = os.path.join(self.saved_dir, os.path.splitext(file_name)[0] + ".json")
+            if os.path.isfile(json_file):
+                os.remove(json_file)
+            segmented_file = os.path.join(self.saved_dir, file_name)
+            if os.path.isfile(segmented_file):
+                os.remove(segmented_file)
+            self.image = None
+            self.f_image = None
+            self.file_name = None
+            # remove file_name from self.files
+            self.files.pop(self.currentInd)
+            if self.currentInd == len(self.files):
+                self.currentInd = 0
+            self.f_view.setText("Empty")
+            self.orgImg.setText("Empty")
+            self.actionList = []
+
+            # self.currentInd += 1
+            # if self.currentInd == len(self.files):
+            #     self.currentInd = 0
+                # self.initUI()
+
+            # if length of files is > 0 then open next file else show empty
+            self.load_stem_points()
+            self.load_image(current_image=True)
+
+
+
+
+
+    def stem_btn_clicked(self):
+        self.selected_tool = 5
 
     def erosion_clicked(self):
         if self.f_image is not None:
@@ -216,6 +240,7 @@ class Segmeter(QDialog):
         self.file_name = file_name[0]
         print("Save name", file_name)
         cv2.imwrite(file_name[0], self.f_image)
+        self.save_stem_points()
 
     def undo(self):
         print("undoing", len(self.actionList))
@@ -343,10 +368,17 @@ class Segmeter(QDialog):
 
     @pyqtSlot()
     def openFile(self):
-        file_name = QFileDialog.getOpenFileName(self, "Open file")
-        self.file_name = file_name[0]
+        file_name_tuple = QFileDialog.getOpenFileName(self, "Open file")
+        if file_name_tuple is not None:
+            self.file_name = file_name_tuple[0]
+            #path, _ = os.path.split(self.file_name)
+            path = os.path.dirname(self.file_name)
+            self.dir = path
+            self.create_folder(path)
+
         self.files = [self.file_name]
         self.currentInd = 0
+        self.load_stem_points()
         self.load_image()
 
     @pyqtSlot()
@@ -363,6 +395,7 @@ class Segmeter(QDialog):
                 self.files.extend(glob.glob(TYPE))
             if self.files != 0:
                 self.currentInd = 0
+                self.load_stem_points()
                 self.load_image(current_image=True)
         except Exception as e:
             print(e)
@@ -388,32 +421,54 @@ class Segmeter(QDialog):
 
     # Save the filtred Image
     def save_current_segment(self):
+        if len(self.files) <= 0:
+            return
         if self.saved_dir is None:
             self.saved_dir = QFileDialog.getExistingDirectory(self, "Save an image", "*.jpg", QFileDialog.ShowDirsOnly)
         file_name = os.path.join(self.saved_dir, self.files[self.currentInd])
         cv2.imwrite(file_name, self.f_image)
 
-    # Show the next image in the list and save the current one if there
-    def next_image(self):
+    def save_stem_points(self):
+        if len(self.stem_points) > 0:
+            with open(os.path.join(self.saved_dir, os.path.splitext(self.files[self.currentInd])[0] + ".json"),
+                      'w') as outfile:
+                json.dump(self.stem_points, outfile)
+
+    def load_stem_points(self):
+        self.stem_points = []
         try:
+            if len(self.files) > 0:
+                with open(os.path.join(self.saved_dir, os.path.splitext(self.files[self.currentInd])[0] + ".json")) as f:
+                    self.stem_points = json.load(f)
+                    self.stem_points = [tuple(x) for x in self.stem_points]
+        except FileNotFoundError as e:
+            pass
+
+    def next_image(self):
+        """ Show the next image in the list and save the current one if there """
+        try:
+            self.save_stem_points()
             self.save_current_segment()
             self.currentInd += 1
             if self.currentInd == len(self.files):
                 self.currentInd = 0
                 # self.initUI()
+            self.load_stem_points()
             self.load_image(current_image=True)
             self.actionList = []
         except Exception as e:
-            print(e)
+           print(e)
 
     # Show the previous image in the list and save the current one if there
     def prv_image(self):
         try:
+            self.save_stem_points()
             self.save_current_segment()
             self.currentInd -= 1
             if self.currentInd == -1:
                 self.currentInd = len(self.files) - 1
                 # self.initUI()
+            self.load_stem_points()
             self.load_image(current_image=True)
             self.actionList = []
         except Exception as e:
@@ -421,6 +476,8 @@ class Segmeter(QDialog):
 
     # load read image and load it with selected filter
     def load_image(self, current_image=False):
+        if len(self.files) <= 0:
+            return
         if current_image:
             self.file_name = self.dir + "/" + self.files[self.currentInd]
 
@@ -433,11 +490,13 @@ class Segmeter(QDialog):
         self.display_image()
 
     # put image at widget
-    @staticmethod
-    def show_image(widget, img):
+    def show_image(self, widget, img):
+        temp_img = img.copy()
+        for point in self.stem_points:
+            cv2.circle(temp_img, point, 3, (233, 20, 100), -1)
         widget.setPixmap(QPixmap.fromImage(
-            QImage(img, img.shape[1], img.shape[0]
-                   , img.strides[0], get_image_format(img)).rgbSwapped()))
+            QImage(temp_img, temp_img.shape[1], temp_img.shape[0]
+                   , temp_img.strides[0], get_image_format(temp_img)).rgbSwapped()))
         widget.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
 
     # put image at widget
@@ -549,6 +608,12 @@ class Segmeter(QDialog):
                     self.actionList = self.actionList[:500]
                     self.floodfill_()
                     self.actionList.append(self.f_image)
+                elif event.type() == QEvent.MouseButtonPress and event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 5:
+                    point = QtCore.QPoint(event.pos())
+                    x = int(point.x())
+                    y = int(point.y())
+                    self.stem_points.append((x, y))
+                    self.update_f_image()
             elif source == self.orgImg:
                 if event.type() == QEvent.MouseMove:
                     point = QtCore.QPoint(event.pos())
