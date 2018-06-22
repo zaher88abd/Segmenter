@@ -440,6 +440,7 @@ class Segmeter(QDialog):
             txt_file.write(self.stem_list.item(index).text() + "\n")
         txt_file.close()
 
+        self.stem_list.clear()
     # Show the next image in the list and save the current one if there
     def next_image(self):
         try:
