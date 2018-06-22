@@ -158,10 +158,6 @@ class Segmeter(QDialog):
             self.load_stem_points()
             self.load_image(current_image=True)
 
-
-
-
-
     def stem_btn_clicked(self):
         self.selected_tool = 5
 
@@ -236,11 +232,8 @@ class Segmeter(QDialog):
         pass
 
     def save_image(self):
-        file_name = QFileDialog.getSaveFileName(self, 'Dialog Save')
-        self.file_name = file_name[0]
-        print("Save name", file_name)
-        cv2.imwrite(file_name[0], self.f_image)
         self.save_stem_points()
+        self.save_current_segment()
 
     def undo(self):
         print("undoing", len(self.actionList))
@@ -369,17 +362,16 @@ class Segmeter(QDialog):
     @pyqtSlot()
     def openFile(self):
         file_name_tuple = QFileDialog.getOpenFileName(self, "Open file")
-        if file_name_tuple is not None:
+        if file_name_tuple is not None and file_name_tuple[0] != '':
             self.file_name = file_name_tuple[0]
-            #path, _ = os.path.split(self.file_name)
             path = os.path.dirname(self.file_name)
             self.dir = path
             self.create_folder(path)
 
-        self.files = [self.file_name]
-        self.currentInd = 0
-        self.load_stem_points()
-        self.load_image()
+            self.files = [self.file_name]
+            self.currentInd = 0
+            self.load_stem_points()
+            self.load_image()
 
     @pyqtSlot()
     def open_dir(self):
