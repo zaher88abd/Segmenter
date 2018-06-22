@@ -425,7 +425,7 @@
      </widget>
     </item>
     <item row="2" column="2">
-     <widget class="QPushButton" name="locator_tool">
+     <widget class="QPushButton" name="locatorBtn">
       <property name="autoFillBackground">
        <bool>false</bool>
       </property>
@@ -1226,7 +1226,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QListWidget" name="custom_list_2">
+  <widget class="QListWidget" name="stem_list">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -1249,7 +1249,7 @@
     <string>Stems indexes</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="removeStemBtn">
    <property name="geometry">
     <rect>
      <x>200</x>
