@@ -64,7 +64,7 @@ def contrast_stretch_const(img, in_min, in_max):
     return out
 
 
-def thresh(img, conservative=0, min_blob_size=50):
+def thresh(img, min_threshold, conservative=0, min_blob_size=50):
     '''
       Get threshold to make mask using the otsus method, and apply a correction
       passed in conservative (-100;100) as a percentage of th.
@@ -85,7 +85,7 @@ def thresh(img, conservative=0, min_blob_size=50):
     # level = 0 if level < 0 else level
 
     # mask image
-    _, mask = cv2.threshold(img, 100, 255, cv2.THRESH_BINARY)
+    _, mask = cv2.threshold(img, min_threshold, 255, cv2.THRESH_BINARY)
 
     # morph operators
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 2))
