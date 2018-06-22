@@ -394,7 +394,32 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="0" colspan="2">
+    <item row="2" column="1">
+     <widget class="QPushButton" name="cleanBtn">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>icons/Clear-icon.png</normaloff>icons/Clear-icon.png</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QPushButton" name="locatorBtn">
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>icons/location-symbol.png</normaloff>icons/location-symbol.png</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" colspan="3">
      <widget class="QPushButton" name="color_selected">
       <property name="acceptDrops">
        <bool>false</bool>
@@ -410,31 +435,6 @@
       </property>
       <property name="flat">
        <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QPushButton" name="cleanBtn">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>icons/Clear-icon.png</normaloff>icons/Clear-icon.png</iconset>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="2">
-     <widget class="QPushButton" name="locator_tool">
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>icons/location-symbol.png</normaloff>icons/location-symbol.png</iconset>
       </property>
      </widget>
     </item>
