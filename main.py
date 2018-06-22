@@ -433,6 +433,12 @@ class Segmeter(QDialog):
             self.saved_dir = QFileDialog.getExistingDirectory(self, "Save an image", "*.jpg", QFileDialog.ShowDirsOnly)
         file_name = os.path.join(self.saved_dir, self.files[self.currentInd])
         cv2.imwrite(file_name, self.f_image)
+        file_name = self.files[self.currentInd].split(".")[0]
+        txt_file = open(os.path.join(self.saved_dir, file_name + ".txt"), "w")
+
+        for index in range(self.stem_list.count()):
+            txt_file.write(self.stem_list.item(index).text() + "\n")
+        txt_file.close()
 
     # Show the next image in the list and save the current one if there
     def next_image(self):
@@ -444,6 +450,7 @@ class Segmeter(QDialog):
                 # self.initUI()
             self.load_image(current_image=True)
             self.actionList = []
+
         except Exception as e:
             print(e)
 
