@@ -9,12 +9,6 @@ WHITE = np.array([255, 255, 255])
 
 def filter_image(original_img, filter_num, self):
     rgb_img = original_img  # cv2.imread(original_img, cv2.IMREAD_UNCHANGED)
-
-    proper_h = 512
-    proper_w = 640
-    # resize to see how it works with kernels
-    rgb_img = ad.resize(rgb_img, [proper_h, proper_w])
-
     if filter_num == 0:
         if len(self.custom_hsv_filters) > 0:
             return custom_hsv_img(rgb_img, self)

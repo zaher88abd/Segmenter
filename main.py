@@ -13,7 +13,7 @@ from UtilOpencv import *
 from lib.filter import *
 import json
 import numpy as np
-
+#import ui
 
 class Segmeter(QDialog):
 
@@ -35,6 +35,9 @@ class Segmeter(QDialog):
         try:
             super().__init__()
             loadUi('main.ui', self)
+            #ui.load_ui(self)
+            # the width of the view area is 640
+            # the height of the view area is 512
             self.undoBtn.clicked.connect(self.undo)
             self.image = None
             self.openBtn.clicked.connect(self.openFile)
@@ -109,12 +112,6 @@ class Segmeter(QDialog):
             self.exgr_slider.valueChanged.connect(self.value_change)
 
             self.deleteBtn.clicked.connect(self.delete_img)
-            # self.exgr_ln_edit.setValidator(QIntValidator())
-            # self.exgr_ln_edit.setMaxLength(3)
-            # self.exgr_ln_edit.setAlignment(Qt.AlignRight)
-            # self.exgr_ln_edit.setFont(QFont("Arial", 20))
-
-            #self.deleteBtn.setEnabled(False)
 
             self.stem_btn.clicked.connect(self.stem_btn_clicked)
             self.remove_stems_btn.clicked.connect(self.remove_stems_btn_clicked)
@@ -148,11 +145,6 @@ class Segmeter(QDialog):
             self.f_view.setText("Empty")
             self.orgImg.setText("Empty")
             self.actionList = []
-
-            # self.currentInd += 1
-            # if self.currentInd == len(self.files):
-            #     self.currentInd = 0
-                # self.initUI()
 
             # if length of files is > 0 then open next file else show empty
             self.load_stem_points()
@@ -398,16 +390,6 @@ class Segmeter(QDialog):
             if not os.path.exists(s_dir):
                 os.makedirs(s_dir)
             self.saved_dir = s_dir
-            # uppath = lambda _path, n: os.sep.join(_path.split(os.sep)[:-n])
-            # parent_dir_path = uppath(dir, 1)
-            # base_dir_name = os.path.basename(os.path.normpath(dir + "/"))
-            # s_dir = os.path.join(parent_dir_path, "segmented_imgs")
-            # if not os.path.exists(s_dir):
-            #     os.makedirs(s_dir)
-            # s_dir = os.path.join(parent_dir_path, "segmenter_imgs", base_dir_name)
-            # if not Path(s_dir).exists():
-            #     os.makedirs(s_dir)
-            # self.saved_dir = s_dir
         except Exception as e:
             print(e)
 
@@ -504,25 +486,64 @@ class Segmeter(QDialog):
     def display_image(self, change_filter=False):
         try:
 
-            if self.f_image is None:
+            if self.f_image is None or change_filter:
                 self.f_image = filter_image(self.image, self.filter_number, self)
-
-            if change_filter:
-                self.f_image = filter_image(self.image, self.filter_number, self)
-
             height, width = self.image.shape[:2]
-            max_height = 512
-            max_width = 640
 
+            # resize to see how it works with kernels
+            #rgb_img = ad.resize(rgb_img, [proper_h, proper_w])
+
+
+
+            #max_height = 512
+            #max_width = 640
+
+            # old way
             # only shrink if img is bigger than required
-            if max_height < height or max_width < width:
-                # get scaling factor
-                scaling_factor = max_height / float(height)
-                if max_width / float(width) < scaling_factor:
-                    scaling_factor = max_width / float(width)
-                # resize image
-                self.image = cv2.resize(self.image, None, fx=scaling_factor, fy=scaling_factor,
-                                        interpolation=cv2.INTER_AREA)
+            # if max_height < height or max_width < width:
+            #     # get scaling factor
+            #     scaling_factor = max_height / float(height)
+            #     if max_width / float(width) < scaling_factor:
+            #         scaling_factor = max_width / float(width)
+            #     # resize image
+            #     self.image = cv2.resize(self.image, None, fx=scaling_factor, fy=scaling_factor,
+            #                             interpolation=cv2.INTER_AREA)
+
+            # another way
+            # if width > height:
+            #     scaling_factor = max_width/width
+            #
+            # else:
+            #     scaling_factor = max_height/height
+            # self.image = cv2.resize(self.image, None, fx=scaling_factor, fy=scaling_factor, interpolation=cv2.INTER_AREA)
+
+            # new way
+            smallest_edge = 360
+            if width > height:
+                new_height = smallest_edge
+                scaling_factor = new_height/height
+                new_width = int(width * scaling_factor)
+            else:
+                new_width = smallest_edge
+                scaling_factor = new_width/width
+                new_height = int(height * scaling_factor)
+            self.image = cv2.resize(self.image, (new_width, new_height), interpolation=cv2.INTER_AREA)
+            self.orgImg.setGeometry(
+                QtCore.QRect(self.orgImg.x(), self.orgImg.y(), new_width, new_height))  # (x, y, height, width)
+            self.f_image = cv2.resize(self.f_image, (new_width, new_height), interpolation=cv2.INTER_AREA)
+            self.f_view.setGeometry(
+                QtCore.QRect(self.f_view.x(), self.f_view.y(), new_width, new_height))  # (x, y, height, width)
+
+            min_screen_width = 1700
+            # if (smallest_edge*2) + 150 < min_screen_width:
+            #     screen_width = min_screen_width
+            # else:
+            #     screen_width = (smallest_edge*2) + 150
+            # self.setGeometry(
+            #     QtCore.QRect(self.x(), self.y(), screen_width, self.height())
+            # )
+
+            #win.resize(new_width*2 + 100, new_height*2 + 100)
 
             # Show original Photo
             self.show_image(self.orgImg, self.image)
