@@ -29,7 +29,7 @@ class Segmeter(QDialog):
         self.custom_hsv_filters = []
         self.f_image = None
         self.file_name = None
-
+        self.locator = None
         try:
             super().__init__()
             loadUi('main.ui', self)
@@ -60,7 +60,7 @@ class Segmeter(QDialog):
             self.pencilBtn.clicked.connect(self.pencil_tool)
             self.pencilSBtn.clicked.connect(self.pencil_s_tool)
             self.cleanBtn.clicked.connect(self.clean_image)
-            self.cleanBtn_2.clicked.connect(self.clean_image_2)
+            self.locatorBtn.clicked.connect(self.locator_tool)
 
             self.radBtnNon.filter_number = 0
             self.radBtnNon.toggled.connect(self.rd_btn_check)
@@ -94,6 +94,7 @@ class Segmeter(QDialog):
 
             self.add_custom_btn.clicked.connect(self.add_custom_thresh)
             self.remove_custom_btn.clicked.connect(self.remove_custom_thresh)
+            self.removeStemBtn.clicked.connect(self.remove_stem)
 
             self.dilation_btn.clicked.connect(self.dilation_clicked)
             self.erosion_btn.clicked.connect(self.erosion_clicked)
@@ -173,8 +174,8 @@ class Segmeter(QDialog):
                                         (self.saturation_min_slider.value(), self.saturation_max_slider.value()),
                                         (self.value_min_slider.value(), self.value_max_slider.value())))
         self.custom_list.addItem(((self.hue_min_slider.value(), self.hue_max_slider.value()),
-                                        (self.saturation_min_slider.value(), self.saturation_max_slider.value()),
-                                        (self.value_min_slider.value(), self.value_max_slider.value())).__str__())
+                                  (self.saturation_min_slider.value(), self.saturation_max_slider.value()),
+                                  (self.value_min_slider.value(), self.value_max_slider.value())).__str__())
         self.radBtnNon.filter_number = 0
         self.radBtnNon.setChecked(True)
         self.display_image(change_filter=True)
@@ -183,24 +184,24 @@ class Segmeter(QDialog):
         slider = self.sender()
         if slider == self.hue_min_slider:
             if self.hue_max_slider.value() <= self.hue_min_slider.value():
-                self.hue_min_slider.setValue(self.hue_max_slider.value()-1)
+                self.hue_min_slider.setValue(self.hue_max_slider.value() - 1)
         if slider == self.hue_max_slider:
             if self.hue_max_slider.value() <= self.hue_min_slider.value():
-                self.hue_max_slider.setValue(self.hue_max_slider.value()+1)
+                self.hue_max_slider.setValue(self.hue_max_slider.value() + 1)
 
         if slider == self.saturation_min_slider:
             if self.saturation_max_slider.value() <= self.saturation_min_slider.value():
-                self.saturation_min_slider.setValue(self.saturation_max_slider.value()-1)
+                self.saturation_min_slider.setValue(self.saturation_max_slider.value() - 1)
         if slider == self.saturation_max_slider:
             if self.saturation_max_slider.value() <= self.saturation_min_slider.value():
-                self.saturation_max_slider.setValue(self.saturation_max_slider.value()+1)
+                self.saturation_max_slider.setValue(self.saturation_max_slider.value() + 1)
 
         if slider == self.value_min_slider:
             if self.value_max_slider.value() <= self.value_min_slider.value():
-                self.value_min_slider.setValue(self.value_max_slider.value()-1)
+                self.value_min_slider.setValue(self.value_max_slider.value() - 1)
         if slider == self.value_max_slider:
             if self.value_max_slider.value() <= self.value_min_slider.value():
-                self.value_max_slider.setValue(self.value_max_slider.value()+1)
+                self.value_max_slider.setValue(self.value_max_slider.value() + 1)
 
         self.display_image(change_filter=True)
 
@@ -234,6 +235,12 @@ class Segmeter(QDialog):
 
     def pencil_s_tool(self):
         self.selected_tool = 3
+        pass
+
+    def locator_tool(self):
+        if self.locator is None:
+            self.locator = self.f_image
+        self.selected_tool = 4
         pass
 
     def set_black_color(self):
@@ -328,6 +335,40 @@ class Segmeter(QDialog):
         except Exception as e:
             print(e)
 
+    def points_locator(self):
+        try:
+            if not hasattr(self, 'f_image'):
+                return
+            if self.seed_pt == None:
+                return
+            point_size = 5
+            self.actionList.append(self.locator)
+            flooded = self.locator.copy()
+            color_ = (255, 128, 128)
+            cv2.circle(flooded, self.seed_pt, point_size, color_, -1)
+            cv2.circle(self.image, self.seed_pt, point_size, color_, -1)
+            self.locator = flooded
+            self.update_locator_image()
+            self.update_org_image()
+            self.add_stem(self.seed_pt[0], self.seed_pt[1])
+        except Exception as e:
+            print(e)
+
+    def update_locator_image(self):
+        try:
+            img = cv2.addWeighted(self.locator, 0.5, self.f_image, 0.5, 0)
+            self.show_image(self.f_view, img)
+        except Exception as e:
+            print(e)
+
+    def add_stem(self, x, y):
+        self.stem_list.addItem((x, y).__str__())
+
+    def remove_stem(self):
+        if self.stem_list.currentRow() >= 0:
+            item = self.stem_list.takeItem(self.stem_list.currentRow())
+            item = None
+
     def update_f_image(self):
         try:
             self.show_image(self.f_view, self.f_image)
@@ -392,7 +433,14 @@ class Segmeter(QDialog):
             self.saved_dir = QFileDialog.getExistingDirectory(self, "Save an image", "*.jpg", QFileDialog.ShowDirsOnly)
         file_name = os.path.join(self.saved_dir, self.files[self.currentInd])
         cv2.imwrite(file_name, self.f_image)
+        file_name = self.files[self.currentInd].split(".")[0]
+        txt_file = open(os.path.join(self.saved_dir, file_name + ".txt"), "w")
 
+        for index in range(self.stem_list.count()):
+            txt_file.write(self.stem_list.item(index).text() + "\n")
+        txt_file.close()
+
+        self.stem_list.clear()
     # Show the next image in the list and save the current one if there
     def next_image(self):
         try:
@@ -403,6 +451,7 @@ class Segmeter(QDialog):
                 # self.initUI()
             self.load_image(current_image=True)
             self.actionList = []
+
         except Exception as e:
             print(e)
 
@@ -545,10 +594,15 @@ class Segmeter(QDialog):
                     elif event.buttons() == QtCore.Qt.RightButton and self.selected_tool == 2:
                         self.points_(False)
                         self.clean_images()
+                if event.type() == QEvent.MouseButtonDblClick:
+                    if self.selected_tool == 4:
+                        self.points_locator()
+                        self.clean_images()
                 elif event.type() == QEvent.MouseButtonPress and event.buttons() == QtCore.Qt.LeftButton and self.selected_tool == 1:
                     self.actionList = self.actionList[:500]
                     self.floodfill_()
                     self.actionList.append(self.f_image)
+
             elif source == self.orgImg:
                 if event.type() == QEvent.MouseMove:
                     point = QtCore.QPoint(event.pos())

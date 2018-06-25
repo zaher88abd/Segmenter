@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1499</width>
-    <height>784</height>
+    <height>818</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -287,7 +287,7 @@
     <rect>
      <x>660</x>
      <y>380</y>
-     <width>108</width>
+     <width>181</width>
      <height>101</height>
     </rect>
    </property>
@@ -315,6 +315,38 @@
       </property>
       <property name="shortcut">
        <string>Ctrl+X</string>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>true</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QPushButton" name="pencilSBtn">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="acceptDrops">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>icons/doublePencil.png</normaloff>icons/doublePencil.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>20</width>
+        <height>20</height>
+       </size>
       </property>
       <property name="autoDefault">
        <bool>true</bool>
@@ -362,38 +394,6 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="0">
-     <widget class="QPushButton" name="pencilSBtn">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="acceptDrops">
-       <bool>false</bool>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>icons/doublePencil.png</normaloff>icons/doublePencil.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>20</width>
-        <height>20</height>
-       </size>
-      </property>
-      <property name="autoDefault">
-       <bool>true</bool>
-      </property>
-      <property name="default">
-       <bool>true</bool>
-      </property>
-      <property name="flat">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
     <item row="2" column="1">
      <widget class="QPushButton" name="cleanBtn">
       <property name="text">
@@ -405,7 +405,21 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="0" colspan="2">
+    <item row="2" column="2">
+     <widget class="QPushButton" name="locatorBtn">
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>icons/location-symbol.png</normaloff>icons/location-symbol.png</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" colspan="3">
      <widget class="QPushButton" name="color_selected">
       <property name="acceptDrops">
        <bool>false</bool>
@@ -487,7 +501,6 @@
     <enum>Qt::Horizontal</enum>
    </property>
   </widget>
-
   <widget class="QLabel" name="hue_min_label">
    <property name="geometry">
     <rect>
@@ -574,7 +587,6 @@
     <enum>Qt::Horizontal</enum>
    </property>
   </widget>
-
   <widget class="QLabel" name="saturation_min_label">
    <property name="geometry">
     <rect>
@@ -661,7 +673,6 @@
     <enum>Qt::Horizontal</enum>
    </property>
   </widget>
-
   <widget class="QLabel" name="value_min_label">
    <property name="geometry">
     <rect>
@@ -748,7 +759,6 @@
     <enum>Qt::Horizontal</enum>
    </property>
   </widget>
-
   <widget class="QPushButton" name="add_custom_btn">
    <property name="geometry">
     <rect>
@@ -769,18 +779,16 @@
      <normaloff>icons/add-icon.png</normaloff>icons/add-icon.png</iconset>
    </property>
   </widget>
-
   <widget class="QListWidget" name="custom_list">
-      <property name="geometry">
-          <rect>
-              <x>1100</x>
-              <y>600</y>
-              <width>300</width>
-              <height>300</height>
-          </rect>
-      </property>
+   <property name="geometry">
+    <rect>
+     <x>1100</x>
+     <y>600</y>
+     <width>300</width>
+     <height>211</height>
+    </rect>
+   </property>
   </widget>
-
   <widget class="QPushButton" name="remove_custom_btn">
    <property name="geometry">
     <rect>
@@ -804,17 +812,17 @@
   <widget class="QPushButton" name="erosion_btn">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>600</y>
+     <x>410</x>
+     <y>680</y>
      <width>61</width>
      <height>31</height>
     </rect>
    </property>
-      <property name="text">
-       <string>Erosion</string>
-      </property>
    <property name="autoFillBackground">
     <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Erosion</string>
    </property>
    <property name="icon">
     <iconset>
@@ -824,17 +832,17 @@
   <widget class="QPushButton" name="dilation_btn">
    <property name="geometry">
     <rect>
-     <x>270</x>
-     <y>600</y>
+     <x>480</x>
+     <y>680</y>
      <width>61</width>
      <height>31</height>
     </rect>
    </property>
-      <property name="text">
-       <string>Dilation</string>
-      </property>
    <property name="autoFillBackground">
     <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Dilation</string>
    </property>
    <property name="icon">
     <iconset>
@@ -844,8 +852,8 @@
   <widget class="QPushButton" name="opening_btn">
    <property name="geometry">
     <rect>
-     <x>340</x>
-     <y>600</y>
+     <x>550</x>
+     <y>680</y>
      <width>61</width>
      <height>31</height>
     </rect>
@@ -853,9 +861,9 @@
    <property name="autoFillBackground">
     <bool>false</bool>
    </property>
-      <property name="text">
-       <string>E + D</string>
-      </property>
+   <property name="text">
+    <string>E + D</string>
+   </property>
    <property name="icon">
     <iconset>
      <normaloff>icons/opening-icon.png</normaloff>icons/opening-icon.png</iconset>
@@ -871,7 +879,7 @@
     </rect>
    </property>
    <property name="text">
-       <string>Kernel:</string>
+    <string>Kernel:</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="kernel_ln_edit">
@@ -884,7 +892,7 @@
     </rect>
    </property>
    <property name="text">
-       <string>5</string>
+    <string>5</string>
    </property>
   </widget>
   <widget class="QLabel" name="exgr_label">
@@ -897,7 +905,7 @@
     </rect>
    </property>
    <property name="text">
-       <string>EXGR:</string>
+    <string>EXGR:</string>
    </property>
   </widget>
   <widget class="QSlider" name="exgr_slider">
@@ -925,44 +933,23 @@
     <enum>Qt::Horizontal</enum>
    </property>
   </widget>
-
-  <widget class="QPushButton" name="cleanBtn_2">
-   <property name="geometry">
-    <rect>
-     <x>780</x>
-     <y>413</y>
-     <width>61</width>
-     <height>61</height>
-    </rect>
-   </property>
-   <property name="autoFillBackground">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>icons/Clear-icon.png</normaloff>icons/Clear-icon.png</iconset>
-   </property>
-  </widget>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>367</x>
      <y>20</y>
-     <width>281</width>
+     <width>320</width>
      <height>41</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-           <widget class="QPushButton" name="deleteBtn">
-               <property name="text">
-                   <string>Delete</string>
-               </property>
-           </widget>
-       </item>
+    <item>
+     <widget class="QPushButton" name="deleteBtn">
+      <property name="text">
+       <string>Delete</string>
+      </property>
+     </widget>
+    </item>
     <item>
      <widget class="QPushButton" name="saveBtn">
       <property name="toolTip">
@@ -1238,6 +1225,46 @@
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QListWidget" name="stem_list">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>620</y>
+     <width>181</width>
+     <height>181</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>590</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Stems indexes</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="removeStemBtn">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>620</y>
+     <width>61</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/remove-icon2.png</normaloff>icons/remove-icon2.png</iconset>
+   </property>
   </widget>
  </widget>
  <resources/>
