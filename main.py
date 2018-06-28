@@ -13,7 +13,9 @@ from UtilOpencv import *
 from lib.filter import *
 import json
 import numpy as np
-#import ui
+
+
+# import ui
 
 class Segmeter(QDialog):
 
@@ -35,7 +37,7 @@ class Segmeter(QDialog):
         try:
             super().__init__()
             loadUi('main.ui', self)
-            #ui.load_ui(self)
+            # ui.load_ui(self)
             # the width of the view area is 640
             # the height of the view area is 512
             self.undoBtn.clicked.connect(self.undo)
@@ -185,8 +187,8 @@ class Segmeter(QDialog):
                                         (self.saturation_min_slider.value(), self.saturation_max_slider.value()),
                                         (self.value_min_slider.value(), self.value_max_slider.value())))
         self.custom_list.addItem(((self.hue_min_slider.value(), self.hue_max_slider.value()),
-                                        (self.saturation_min_slider.value(), self.saturation_max_slider.value()),
-                                        (self.value_min_slider.value(), self.value_max_slider.value())).__str__())
+                                  (self.saturation_min_slider.value(), self.saturation_max_slider.value()),
+                                  (self.value_min_slider.value(), self.value_max_slider.value())).__str__())
         self.radBtnNon.filter_number = 0
         self.radBtnNon.setChecked(True)
         self.display_image(change_filter=True)
@@ -195,24 +197,24 @@ class Segmeter(QDialog):
         slider = self.sender()
         if slider == self.hue_min_slider:
             if self.hue_max_slider.value() <= self.hue_min_slider.value():
-                self.hue_min_slider.setValue(self.hue_max_slider.value()-1)
+                self.hue_min_slider.setValue(self.hue_max_slider.value() - 1)
         if slider == self.hue_max_slider:
             if self.hue_max_slider.value() <= self.hue_min_slider.value():
-                self.hue_max_slider.setValue(self.hue_max_slider.value()+1)
+                self.hue_max_slider.setValue(self.hue_max_slider.value() + 1)
 
         if slider == self.saturation_min_slider:
             if self.saturation_max_slider.value() <= self.saturation_min_slider.value():
-                self.saturation_min_slider.setValue(self.saturation_max_slider.value()-1)
+                self.saturation_min_slider.setValue(self.saturation_max_slider.value() - 1)
         if slider == self.saturation_max_slider:
             if self.saturation_max_slider.value() <= self.saturation_min_slider.value():
-                self.saturation_max_slider.setValue(self.saturation_max_slider.value()+1)
+                self.saturation_max_slider.setValue(self.saturation_max_slider.value() + 1)
 
         if slider == self.value_min_slider:
             if self.value_max_slider.value() <= self.value_min_slider.value():
-                self.value_min_slider.setValue(self.value_max_slider.value()-1)
+                self.value_min_slider.setValue(self.value_max_slider.value() - 1)
         if slider == self.value_max_slider:
             if self.value_max_slider.value() <= self.value_min_slider.value():
-                self.value_max_slider.setValue(self.value_max_slider.value()+1)
+                self.value_max_slider.setValue(self.value_max_slider.value() + 1)
 
         self.display_image(change_filter=True)
 
@@ -398,8 +400,9 @@ class Segmeter(QDialog):
         if len(self.files) <= 0:
             return
         if self.saved_dir is None:
-            self.saved_dir = QFileDialog.getExistingDirectory(self, "Save an image", "*.jpg", QFileDialog.ShowDirsOnly)
+            self.saved_dir = QFileDialog.getExistingDirectory(self, "Save an image", "*.png", QFileDialog.ShowDirsOnly)
         file_name = os.path.join(self.saved_dir, self.files[self.currentInd])
+        file_name=file_name.split(".")[0] + ".png"
         cv2.imwrite(file_name, self.f_image)
 
     def save_stem_points(self):
@@ -412,7 +415,8 @@ class Segmeter(QDialog):
         self.stem_points = []
         try:
             if len(self.files) > 0:
-                with open(os.path.join(self.saved_dir, os.path.splitext(self.files[self.currentInd])[0] + ".json")) as f:
+                with open(
+                        os.path.join(self.saved_dir, os.path.splitext(self.files[self.currentInd])[0] + ".json")) as f:
                     self.stem_points = json.load(f)
                     self.stem_points = [tuple(x) for x in self.stem_points]
         except FileNotFoundError as e:
@@ -431,7 +435,7 @@ class Segmeter(QDialog):
             self.load_image(current_image=True)
             self.actionList = []
         except Exception as e:
-           print(e)
+            print(e)
 
     # Show the previous image in the list and save the current one if there
     def prv_image(self):
@@ -491,12 +495,10 @@ class Segmeter(QDialog):
             height, width = self.image.shape[:2]
 
             # resize to see how it works with kernels
-            #rgb_img = ad.resize(rgb_img, [proper_h, proper_w])
+            # rgb_img = ad.resize(rgb_img, [proper_h, proper_w])
 
-
-
-            #max_height = 512
-            #max_width = 640
+            # max_height = 512
+            # max_width = 640
 
             # old way
             # only shrink if img is bigger than required
@@ -521,11 +523,11 @@ class Segmeter(QDialog):
             smallest_edge = 360
             if width > height:
                 new_height = smallest_edge
-                scaling_factor = new_height/height
+                scaling_factor = new_height / height
                 new_width = int(width * scaling_factor)
             else:
                 new_width = smallest_edge
-                scaling_factor = new_width/width
+                scaling_factor = new_width / width
                 new_height = int(height * scaling_factor)
             self.image = cv2.resize(self.image, (new_width, new_height), interpolation=cv2.INTER_AREA)
             self.orgImg.setGeometry(
@@ -543,7 +545,7 @@ class Segmeter(QDialog):
             #     QtCore.QRect(self.x(), self.y(), screen_width, self.height())
             # )
 
-            #win.resize(new_width*2 + 100, new_height*2 + 100)
+            # win.resize(new_width*2 + 100, new_height*2 + 100)
 
             # Show original Photo
             self.show_image(self.orgImg, self.image)
