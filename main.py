@@ -402,7 +402,7 @@ class Segmeter(QDialog):
         if self.saved_dir is None:
             self.saved_dir = QFileDialog.getExistingDirectory(self, "Save an image", "*.png", QFileDialog.ShowDirsOnly)
         file_name = os.path.join(self.saved_dir, self.files[self.currentInd])
-        file_name=file_name.split(".")[0] + ".png"
+        file_name = file_name.split(".")[0] + ".png"
         cv2.imwrite(file_name, self.f_image)
 
     def save_stem_points(self):
@@ -520,7 +520,7 @@ class Segmeter(QDialog):
             # self.image = cv2.resize(self.image, None, fx=scaling_factor, fy=scaling_factor, interpolation=cv2.INTER_AREA)
 
             # new way
-            smallest_edge = 360
+            smallest_edge = 600
             if width > height:
                 new_height = smallest_edge
                 scaling_factor = new_height / height
