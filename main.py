@@ -134,7 +134,7 @@ class Segmeter(QDialog):
             json_file = os.path.join(self.saved_dir, os.path.splitext(file_name)[0] + ".json")
             if os.path.isfile(json_file):
                 os.remove(json_file)
-            segmented_file = os.path.join(self.saved_dir, file_name)
+            segmented_file = os.path.join(self.saved_dir, os.path.splitext(file_name)[0] + ".png")
             if os.path.isfile(segmented_file):
                 os.remove(segmented_file)
             self.image = None
@@ -401,8 +401,7 @@ class Segmeter(QDialog):
             return
         if self.saved_dir is None:
             self.saved_dir = QFileDialog.getExistingDirectory(self, "Save an image", "*.png", QFileDialog.ShowDirsOnly)
-        file_name = os.path.join(self.saved_dir, self.files[self.currentInd])
-        file_name = file_name.split(".")[0] + ".png"
+        file_name = os.path.join(self.saved_dir, os.path.splitext(self.files[self.currentInd])[0] + ".png")
         cv2.imwrite(file_name, self.f_image)
 
     def save_stem_points(self):
@@ -459,8 +458,9 @@ class Segmeter(QDialog):
         if current_image:
             self.file_name = self.dir + "/" + self.files[self.currentInd]
 
-        if self.saved_dir is not None and Path(os.path.join(self.saved_dir, self.files[self.currentInd])).is_file():
-            self.f_image = cv2.imread(os.path.join(self.saved_dir, self.files[self.currentInd]))
+        save_path = os.path.join(self.saved_dir, os.path.splitext(self.files[self.currentInd])[0] + ".png")
+        if self.saved_dir is not None and Path(save_path).is_file():
+            self.f_image = cv2.imread(os.path.join(self.saved_dir, os.path.splitext(self.files[self.currentInd])[0] + ".png"))
         else:
             self.f_image = None
         self.filename_lbl.setText(self.files[self.currentInd])
