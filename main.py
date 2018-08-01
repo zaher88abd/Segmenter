@@ -14,7 +14,7 @@ from lib.filter import *
 import json
 import numpy as np
 
-
+from multiprocessing import Process, Queue
 # import ui
 
 class Segmeter(QDialog):
@@ -117,8 +117,28 @@ class Segmeter(QDialog):
 
             self.stem_btn.clicked.connect(self.stem_btn_clicked)
             self.remove_stems_btn.clicked.connect(self.remove_stems_btn_clicked)
+            self.openBagFileBtn.clicked.connect(self.open_bag_file_btn_clicked)
         except Exception as e:
             print(e)
+
+    def process_bag_file(self, bag_path, queue):
+        """ process bag file and run command line. Don't return anything."""
+        is_success = False
+        # do code here
+        # set status code here
+        # set is_success here
+        queue.put(is_success)
+
+    def open_bag_file_btn_clicked(self):
+        """open dialog box, open bag file, process bag file, store in data-folder of annotation tool, load the data into annotation tool"""
+        bag_path = "blah"
+        queue = Queue()
+        self.bag_status_label.setText("Working!")
+        p = Process(target=self.process_bag_file, args=(bag_path, queue))
+        p.start()
+        is_success = queue.get()
+        p.join()
+        self.bag_status_label.setText("Sleeping")
 
     def remove_stems_btn_clicked(self):
         self.stem_points = []
@@ -648,6 +668,9 @@ class Segmeter(QDialog):
             print(e)
 
 
+
+
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = Segmeter()
@@ -655,4 +678,3 @@ if __name__ == "__main__":
     window.show()
     app.installEventFilter(window)
     sys.exit(app.exec_())
-    main()

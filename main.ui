@@ -959,6 +959,46 @@
      <normaloff>.</normaloff>.</iconset>
    </property>
   </widget>
+  <widget class="QLabel" name="bag_label">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>840</y>
+     <width>61</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Bag File:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="bag_txtfield">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>840</y>
+     <width>181</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>[File name]</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="bag_status_label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>840</y>
+     <width>81</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Sleeping</string>
+   </property>
+  </widget>
+
   <widget class="QPushButton" name="cleanBtn_2">
    <property name="geometry">
     <rect>
@@ -1032,6 +1072,16 @@
       </property>
       <property name="shortcut">
        <string>Ctrl+Shift+O</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="openBagFileBtn">
+      <property name="toolTip">
+       <string>open bag file</string>
+      </property>
+      <property name="text">
+       <string>Open Bag</string>
       </property>
      </widget>
     </item>
